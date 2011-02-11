@@ -1,0 +1,23 @@
+#<?
+RewriteEngine On
+#RewriteBase /
+
+# статические страницы
+RewriteRule ^pages/([0-9]+)\.htm$ index.php?spage=$1
+
+# Rss
+RewriteRule ^rss\.xml$ index.php?rss
+
+#sitemap plugin sitemap
+RewriteRule ^sitemap.xml$ ./plugins/sitemap/index.php
+
+#если используется сжатие файла sitemap.xml
+#RewriteRule ^sitemap.xml.gz$ sitemap.xml
+
+#Постоянные ссылки на новости
+RewriteRule ^news/([0-9]+)\.htm$ index.php?news=$1
+RewriteRule ^news/([0-9]+)\.html$ index.php?news=$1
+RewriteRule ^readmore/([0-9]+)\.htm$ index.php?readmore=$1
+RewriteRule ^readmore/([0-9]+)\.html$ index.php?readmore=$1
+
+#?>
