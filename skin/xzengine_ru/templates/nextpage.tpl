@@ -1,0 +1,1 @@
+<a href="{link}" title="Страница - {pagenum}"> Вперёд &gt;&gt;</a>
