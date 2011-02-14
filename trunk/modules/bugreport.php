@@ -16,13 +16,13 @@ function ErrorCatchCallback($errno, $errstr, $errfile, $errline)
 // реализован как синглтон (http://ru.wikipedia.org/wiki/%d0%a1%d0%b8%d0%bd%d0%b3%d0%bb%d1%82%d0%be%d0%bd)
  class BugReport
 {	
-	private static $instance; //статическая переменна - экземпляр объекта
+	private static $instance; //статическая переменная - экземпляр объекта
 	private $m_log;			  // состояние лога
 	private $m_oldErrorHandler;		// старый хэндлер ошибок
 	
 	/////////////////////////////
 	// конструктор
-	// в случае создания нескольких коннектов к бд 		
+	// в случае создания нескольких объектов
 	/////////////////////////////	
 	private function __construct() {}
 	

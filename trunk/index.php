@@ -5,14 +5,15 @@
 // если передано $_GET['addnews'] то добавляем новость
 // если передано $_GET['page'] то показываем страницу с новостью
 
-
 // если нету config.php файла , значит система ещё не установлена
-if(filesize("config.php") == 0)
+if(filesize("./config.php") == 0)
 {	
 	// редректим на страницу установки
 	header("Location: ./install/index.php");
 	exit();
 }
+
+
 ////////////////////////////////////////////////////////
 // включаем перехват errors
 require_once './modules/bugreport.php';
@@ -23,16 +24,18 @@ else
 	error_reporting(0);
 ////////////////////////////////////////////////////////
 
+
 // запоминаем время
 $time_start = microtime(1);
 
 // информация о версии
 
-$VERSION_MAJOR	= '1';		// старшая версия
-$VERSION_MINOR	= '7';		// младшая версия
-$VERSION_INFO	= 'beta 8';	// дополнительная информация
+$VERSION_MAJOR	= '2';		// старшая версия
+$VERSION_MINOR	= '0';		// младшая версия
+$VERSION_INFO	= 'beta 1';	// дополнительная информация
 
 // записываем в заголовок время последнего изменения страницы
+// FIXME: а надо ? поисковики любят когда страница не изменяется
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 
 
@@ -49,7 +52,7 @@ require_once './admin/classes/staticpages.php';
 require_once './modules/textdb/txt-db-api.php';
 require_once './modules/pluginmanager.php';
 
-
+// языковые настройки
 require_once './lang/'.SITE_LOC_FILE.'/lang.php';
 
 
@@ -61,6 +64,7 @@ PluginManager::Instance();
 
 // получаем привилегии пользователя
 $up = new userPriviliges();
+
 
 // проверяем отключён ли сайт
 if(OFF_SITE)
@@ -113,7 +117,7 @@ if(isset($_GET['feedback']))
 {
 	$fb = new FeedBack();
 	
-	$message='';
+	$message = '';
 	
 	if($_GET['feedback'] == 'send')
 		$message = $fb->SendFeedBack();	

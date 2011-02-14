@@ -15,10 +15,11 @@ class PluginManager
 
 	/////////////////////////////
 	// конструктор
-	// в случае создания нескольких коннектов к бд 		
+	// в случае создания нескольких объёктов	
 	/////////////////////////////	
 	private function __construct()
-	{
+	{	
+		// сканируем директорию с плагинами
 		self::ScanTagsPluginsDirectory();
 	}
 	private function __clone() {}
@@ -44,6 +45,10 @@ class PluginManager
 		while (false !== ($file = readdir($handle)))
 		{
 			if($file == '.' || $file == '..')
+				continue;
+			
+			// скипаем svn
+			if($file == '.svn')
 				continue;
 			
 			$includePath = $tagPluginsDir.$file.'/'.$file.'.php';			
