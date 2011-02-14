@@ -19,7 +19,8 @@ class EditTemplates
 		$main_page_template = str_replace("{javascript_admin}", $JavaScript, $main_page_template);
 			
 		$this->ParseInputParams($curentTemplate, $currentFile);		
-	
+		
+		// загрузка шаблона
 		$render_str = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/edittemplates.tpl");
 		
 		// заменяем теги 
