@@ -16,7 +16,7 @@
             	<span class="SiteContent"><a href="./index.php?staticpagelist">Статические страницы</a></span><br />
             	<span class="SiteContent"><a href="./index.php?dbtools">Работа с БД</a></span><br>
 			<span class="SiteContent"><a href="./index.php?uploadfilelist">Загрузить файл</a></span><br>
-			<span class="SiteContent"><a href="./index.php?chusernameandpass">Изменить имя пользователя и пароль</a></span></p>
+			</p>
             </td>
         </tr>
       </table>
