@@ -62,15 +62,11 @@ AbstractDataBase::Instance()->zero_number_of_queries(); // обнуляем количество з
 // инициализируем plugin менеджер
 PluginManager::Instance();
 
-// получаем привилегии пользователя
-$up = new userPriviliges();
-
-
 // проверяем отключён ли сайт
 if(OFF_SITE)
 {	
 	// если администратор то загружаем обычный шаблон 	
-	if($up->IsAdministrator())
+	if(userPriviliges::IsAdministrator())
 		$render_str = file_get_contents("./skin/".SKIN."/templates/index.tpl");		// шаблон
 	else
 	{
@@ -178,7 +174,7 @@ if(isset($_GET['spage']))
 $addn = new addnews();
 if(isset($_GET['addnews']))  //добавляем новость
 {	
-	if($up->IsAdministrator() )
+	if(userPriviliges::IsAdministrator() )
 	{	
 		// добавление новости
 		$message = "";	
@@ -256,7 +252,7 @@ $render_str = str_replace("{versionnumber}", $VERSION_MAJOR.'.'.$VERSION_MINOR.'
 
 //{adminpanellink} - ссылка на админ панель, показывается только если пользователь зашёл как администратор
 
-if($up->IsAdministrator())
+if(userPriviliges::IsAdministrator())
 	$render_str = str_replace("{adminpanellink}", '<a href="'.SITE_PATH.'/admin/index.php">'.lang_goto_adminpanel.'</a>', $render_str);
 else
 	$render_str = str_replace("{adminpanellink}", '', $render_str);	

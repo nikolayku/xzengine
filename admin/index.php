@@ -37,17 +37,15 @@ require_once '../modules/textdb/txt-db-api.php';
 
 $render_str = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/index.tpl");		// шаблон
 
-$up = new userPriviliges();
-
 $message = 'Ќе найдена сесси€ администратора - пожалуйста авторизируйтесь <a href="../index.php">Ќазад на сайт</a>';
 
 // если установлены cookies 
 
 if(isset($_COOKIE['login']) && isset($_COOKIE['md5pass']))
 {	
-	if($up->IsUserExist($_COOKIE['login'], $_COOKIE['md5pass'], $message, true))
+	if(userPriviliges::IsUserExist($_COOKIE['login'], $_COOKIE['md5pass'], $message, true))
 	{	
-		$up->SetAdminCookies($_COOKIE['login'], $_COOKIE['md5pass'], false, true);
+		userPriviliges::SetAdminCookies($_COOKIE['login'], $_COOKIE['md5pass'], false, true);
 	}
 }
 
@@ -65,13 +63,13 @@ if(isset($_GET['login']))
 		$password = $_POST['password'];
 	
 	// провер€ем пароль и им€ пользовател€
-	if($up->IsUserExist($login, $password, $message))
+	if(userPriviliges::IsUserExist($login, $password, $message))
 	{
 		// сохран€ем cookies
 		if($_POST['SaveOnThis']=='1')	// если надо сохран€ть кукисы
-			$up->SetAdminCookies($login, $password, true);
+			userPriviliges::SetAdminCookies($login, $password, true);
 		else
-			$up->SetAdminCookies($login, $password, false);		
+			userPriviliges::SetAdminCookies($login, $password, false);		
 		
 	}
 		
@@ -80,11 +78,11 @@ if(isset($_GET['login']))
 
 // если определЄн $_GET['logout'] то выходим
 if(isset($_GET['logout']))
-	$up->RemoveCookies();	 
+	userPriviliges::RemoveCookies();	 
 
 
 
-if($up->IsAdministrator())
+if(userPriviliges::IsAdministrator())
 {	
 	
 	$parseOne = true;	// за один просмотр страницы можем выполнить одно действие	
@@ -168,13 +166,12 @@ if($up->IsAdministrator())
 	
 		if($_GET['chusernameandpass'] == 'change')
 		{
-			$up->ChangeUsernameAndPass();
+			userPriviliges::ChangeUsernameAndPass();
 			$message = '»м€ пользовател€ и пароль изменены.';
 			
 		}	
-			
-	
-		$render_str = str_replace("{sitecontent_admin}", $up->LoadChangepasswordForm($message), $render_str);
+
+		$render_str = str_replace("{sitecontent_admin}", userPriviliges::LoadChangepasswordForm($message), $render_str);
 		$parseOne = false;
 	}			
 	
@@ -318,7 +315,7 @@ else
 	$render_str = str_replace("{menu_admin}", '', $render_str);
 	
 	// замен€ем шаблон {sitecontent_admin}
-	$render_str = str_replace("{sitecontent_admin}", $up->render($message), $render_str);
+	$render_str = str_replace("{sitecontent_admin}", userPriviliges::render($message), $render_str);
 
 }
 

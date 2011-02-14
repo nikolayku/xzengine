@@ -979,9 +979,7 @@ define('C_WARNING', 4);
 
 
 // проверяем является ли пользователь администратором
-$up = new userPriviliges();
-
-if(!$up->IsAdministrator())
+if(!userPriviliges::IsAdministrator())
 {	
 	$buttons = "<INPUT ID=close TYPE=button VALUE='Закрыть окно' DISABLED onClick=\"window.close();\">";
 	echo tpl_page("Не найдена сессия администратора , пожалуйста авторизируйтесь",$buttons);

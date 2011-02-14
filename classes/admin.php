@@ -1,15 +1,11 @@
 <?php
-/////////////////////////////////////////
-// отвечает за привилегии пользователя
-/////////////////////////////////////////
+// 
+
 
 class userPriviliges
 {	
-
-	//////////////////////////////
 	// изменяем иня пользователя и пароль
-	//////////////////////////////
-	function ChangeUsernameAndPass()
+	static function ChangeUsernameAndPass()
 	{
 		// должно быть определено
 		// $_POST['users_login'] имя пользователя
@@ -23,10 +19,8 @@ class userPriviliges
 		$this->SetAdminCookies($_POST['users_login'], $_POST['users_password']);		
 	}	
 	
-	//////////////////////////////
 	// загружает шаблон изменения пароля и имени пользователя
-	//////////////////////////////
-	function LoadChangepasswordForm($message = "")
+	static function LoadChangepasswordForm($message = "")
 	{
 		$render_str = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/changepassword.tpl");
 		
@@ -52,13 +46,9 @@ class userPriviliges
 		return $render_str;
 	}
 	
-	
-	///////////////////////////
 	// загружает шаблон Login.tpl
 	// возврящяет водержимое этого шаблона
-	///////////////////////////
-
-	function render($message)
+	static function render($message)
 	{
 		$render_str = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/login.tpl");
 		
@@ -68,14 +58,11 @@ class userPriviliges
 		return $render_str;
 	}	
 
-	///////////////////////////
 	// проверяет принадлежит ли пользователь к администраторам
 	// в cookies должно быть установлено следующее
 	// имя пользователя и MD5 хэш пароль
 	// если они совпадают с правльными то тогда это администратор иначе гость
-	//////////////////////////	
-
-	function IsAdministrator()
+	static function IsAdministrator()
 	{	
 		session_start();
 		
@@ -98,12 +85,10 @@ class userPriviliges
 		return false;
 	}
 	
-	////////////////////
 	// Проверяет существует ли пользователь
 	// true если пользователь с таким именем существует	
 	// $md5pass значит пароль ($pass) задан в виде md5 кэша
-	///////////////////
-	function IsUserExist($login, $pass, &$message, $md5pass=false)
+	static function IsUserExist($login, $pass, &$message, $md5pass=false)
 	{	
 		// имя пользователя не может быть пустым
 		if(strlen($login) == 0)
@@ -146,12 +131,10 @@ class userPriviliges
 		
 	}
 
-	////////////////////
 	// устанавливает Cookies у пользователя
 	// $md5pass если $pass передан как md5 хэш
 	// $setcoockie - значит сохранять ещё и в cookies
-	///////////////////
-	function SetAdminCookies($login, $pass, $setcoockie = false, $md5pass = false)
+	static function SetAdminCookies($login, $pass, $setcoockie = false, $md5pass = false)
 	{
 
 		if($setcoockie)
@@ -177,10 +160,8 @@ class userPriviliges
 			
 	}	
 
-	//////////////////////
 	// remove administrator Cookies
-	/////////////////////
-	function RemoveCookies()
+	static function RemoveCookies()
 	{	
 		setcookie('login', '', 0);
 		setcookie('md5pass', '', 0);

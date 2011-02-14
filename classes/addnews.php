@@ -149,50 +149,45 @@ class addnews
 		// {categorylist}		
 		$template = str_replace("{categorylist}", $newscategory, $template);
 		
-		
-		
-
-	
-		// проверяем является ли пользователь администратором
-		$up = new userPriviliges();
-		
-		// показываем расширенный набор кнопок
-		if($up->IsAdministrator())
+		// показываем расширенный набор кнопок (для администратора)
+		if(userPriviliges::IsAdministrator())
 		{
-			$tinyJS = '<script language="javascript" type="text/javascript" src="{sitepath}/editor/tiny_mce.js"></script> 
-<script language="javascript" type="text/javascript">
+			$tinyJS = 
+				'<script language="javascript" type="text/javascript" src="{sitepath}/editor/tiny_mce.js"></script> 
+				<script language="javascript" type="text/javascript">
 
-tinyMCE.init({
-mode : "textareas",
-theme_advanced_toolbar_location : "top",
-plugins : "emotions",
-theme_advanced_buttons1 : "justifyleft,justifycenter,justifyfull,justifyright,fontsizeselect,forecolor,separator,bold,italic,underline,strikethrough,separator,link,image,separator,emotions,separator,code",
-theme_advanced_buttons2 : "",
-theme_advanced_buttons3 : "",
-relative_urls : false,
-convert_urls : false
-});
+				tinyMCE.init({
+				mode : "textareas",
+				theme_advanced_toolbar_location : "top",
+				plugins : "emotions",
+				theme_advanced_buttons1 : "justifyleft,justifycenter,justifyfull,justifyright,fontsizeselect,forecolor,separator,bold,italic,underline,strikethrough,separator,link,image,separator,emotions,separator,code",
+				theme_advanced_buttons2 : "",
+				theme_advanced_buttons3 : "",
+				relative_urls : false,
+				convert_urls : false
+				});
 
-</script>';	
+				</script>';	
 		}
 		else
 		{	
 			// показываем обычный набор кнопок
-			$tinyJS = '<script language="javascript" type="text/javascript" src="{sitepath}/editor/tiny_mce.js"></script> 
-<script language="javascript" type="text/javascript">
+			$tinyJS = 
+				'<script language="javascript" type="text/javascript" src="{sitepath}/editor/tiny_mce.js"></script> 
+				<script language="javascript" type="text/javascript">
 
-tinyMCE.init({
-mode : "textareas",
-theme_advanced_toolbar_location : "top",
-plugins : "emotions",
-theme_advanced_buttons1 : "separator,justifyleft,justifycenter,justifyfull,justifyright,separator,bold,italic,underline,strikethrough,separator,link,image,separator,emotions,separator",
-theme_advanced_buttons2 : "",
-theme_advanced_buttons3 : "",
-relative_urls : false,
-convert_urls : false
-});
+				tinyMCE.init({
+				mode : "textareas",
+				theme_advanced_toolbar_location : "top",
+				plugins : "emotions",
+				theme_advanced_buttons1 : "separator,justifyleft,justifycenter,justifyfull,justifyright,separator,bold,italic,underline,strikethrough,separator,link,image,separator,emotions,separator",
+				theme_advanced_buttons2 : "",
+				theme_advanced_buttons3 : "",
+				relative_urls : false,
+				convert_urls : false
+				});
 
-</script>';	
+				</script>';	
 		}
 			
 	
@@ -206,7 +201,7 @@ convert_urls : false
 	$t = "";
 	
 
-	if($up->IsAdministrator())
+	if(userPriviliges::IsAdministrator())
 	{
 		//
 		$t = file_get_contents("./skin/".SKIN."/templates/options.tpl");
@@ -251,7 +246,7 @@ convert_urls : false
 		}
 		
 		
-	}// end if($up->IsAdministrator())
+	}// end if(userPriviliges::IsAdministrator())
 	else
 	{
 		$t = file_get_contents("./skin/".SKIN."/templates/antispampicture.tpl");
@@ -271,10 +266,8 @@ convert_urls : false
 	/////////////////////////////////////
 	function Check(&$message)
 	{	
-		$up = new userPriviliges();		
-	
 		// проверяем является ли пользователь администратором
-		$isadmin = 	$up->IsAdministrator();
+		$isadmin = 	userPriviliges::IsAdministrator();
 		
 		// флаги добавления новости
 		$news_fixed = 0;		// зафиксирована
