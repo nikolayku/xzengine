@@ -13,7 +13,6 @@ if(filesize("./config.php") == 0)
 	exit();
 }
 
-
 ////////////////////////////////////////////////////////
 // включаем перехват errors
 require_once './modules/bugreport.php';
@@ -38,7 +37,6 @@ $VERSION_INFO	= 'beta 1';	// дополнительная информация
 // FIXME: а надо ? поисковики любят когда страница не изменяется
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 
-
 require_once './modules/database.php';
 require_once './modules/errorpage.php';
 require_once './classes/viewnews.php';
@@ -54,7 +52,6 @@ require_once './modules/pluginmanager.php';
 
 // языковые настройки
 require_once './lang/'.SITE_LOC_FILE.'/lang.php';
-
 
 // создаём БД
 AbstractDataBase::Instance()->zero_number_of_queries(); // обнуляем количество запросов
