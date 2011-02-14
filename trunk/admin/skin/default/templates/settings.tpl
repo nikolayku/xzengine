@@ -238,7 +238,24 @@
               <td>Путь к форуму</td>
               <td>
                 <input name="FORUM_PATH" type="text" id="FORUM_PATH" value="{FORUM_PATH}" />              </td>
-            </tr>						
+            </tr>
+			<tr>
+              <td>&nbsp;</td>
+              <td class="NewDateStamp">Учётная запись администратора</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td height="28">&nbsp;</td>
+              <td>Логин администратора</td>
+              <td>
+                <input name="ADMIN_LOGIN" type="text" id="ADMIN_LOGIN" value="{ADMIN_LOGIN}" />              </td>
+            </tr>
+			<tr>
+              <td height="28">&nbsp;</td>
+              <td>Пароль администратора</td>
+              <td>
+                <input name="ADMIN_PASS" type="text" id="ADMIN_PASS" value="{ADMIN_PASS}" />              </td>
+            </tr>	
             <tr>
               <td>&nbsp;</td>
               <td colspan="2" align="center" valign="middle">

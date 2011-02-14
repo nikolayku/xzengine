@@ -132,21 +132,7 @@ if(userPriviliges::IsAdministrator())
 		
 		$render_str = str_replace("{sitecontent_admin}", $databasetools->LoadTemplate($render_str ,$message), $render_str);
 	}			
-	else if(isset($_GET['chusernameandpass']))
-	{	
-		// форма изменения пароля и имени рользователя
-		
-		$message = '';
 	
-		if($_GET['chusernameandpass'] == 'change')
-		{
-			userPriviliges::ChangeUsernameAndPass();
-			$message = 'Имя пользователя и пароль изменены.';
-			
-		}	
-
-		$render_str = str_replace("{sitecontent_admin}", userPriviliges::LoadChangepasswordForm($message), $render_str);
-	}			
 	else if(isset($_GET['uploadfilelist']))
 	{	
 		// загружаем форму загрузки файлов
@@ -221,17 +207,16 @@ if(userPriviliges::IsAdministrator())
 	else if(isset($_GET['config']))
 	{	
 		//страница настроек
-		
-		$s = new EngineSettings();
+	
 		$message = '';
 		if($_GET['config'] =='save')
 		{
-			$message = $s->SaveConfig('config.php');
+			$message = EngineSettings::SaveConfig('config.php');
 			echo '<meta http-equiv="Refresh" content="0;URL=index.php?config" />';		
 
 		}
 		
-		$render_str = str_replace("{sitecontent_admin}", $s->LoadSettingsFileAsTemplate($render_str, $message), $render_str);
+		$render_str = str_replace("{sitecontent_admin}", EngineSettings::LoadSettingsFileAsTemplate($render_str, $message), $render_str);
 	}
 	else if(isset($_GET['id']))
 	{
