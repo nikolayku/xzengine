@@ -248,7 +248,8 @@ $render_str = str_replace("{title}", SITE_TITLE, $render_str);
 $render_str = str_replace("{keywords}", SITE_KEYWORDS, $render_str);
 
 // {skin}
-$render_str = str_replace("{skin}", './skin/'.SKIN, $render_str);
+// FIXME: подумать
+$render_str = str_replace("{skin}", '{sitepath}/skin/'.SKIN, $render_str);
 
 //{versionnumber} - текущ€€ верси€
 $render_str = str_replace("{versionnumber}", $VERSION_MAJOR.'.'.$VERSION_MINOR.' '.$VERSION_INFO, $render_str);

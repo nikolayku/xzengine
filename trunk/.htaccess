@@ -3,7 +3,7 @@ RewriteEngine On
 #RewriteBase /
 
 # статические страницы
-RewriteRule ^pages/([0-9]+)\.htm$ index.php?spage=$1
+RewriteRule ^spage/([0-9]+)\.htm$ index.php?spage=$1
 
 # Rss
 RewriteRule ^rss\.xml$ index.php?rss
