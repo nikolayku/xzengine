@@ -37,17 +37,8 @@ require_once '../modules/textdb/txt-db-api.php';
 
 $render_str = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/index.tpl");		// шаблон
 
+// FIXME: перенести в локализацию
 $message = 'Не найдена сессия администратора - пожалуйста авторизируйтесь <a href="../index.php">Назад на сайт</a>';
-
-// если установлены cookies 
-
-if(isset($_COOKIE['login']) && isset($_COOKIE['md5pass']))
-{	
-	if(userPriviliges::IsUserExist($_COOKIE['login'], $_COOKIE['md5pass'], $message, true))
-	{	
-		userPriviliges::SetAdminCookies($_COOKIE['login'], $_COOKIE['md5pass'], false, true);
-	}
-}
 
 
 // если определено $_GET['login'] то пользователь входит в систему
@@ -71,9 +62,7 @@ if(isset($_GET['login']))
 		else
 			userPriviliges::SetAdminCookies($login, $password, false);		
 		
-	}
-		
-		
+	}	
 }
 
 // если определён $_GET['logout'] то выходим
@@ -81,23 +70,21 @@ if(isset($_GET['logout']))
 	userPriviliges::RemoveCookies();	 
 
 
-
+// если пользователь администратор
 if(userPriviliges::IsAdministrator())
 {	
-	
-	$parseOne = true;	// за один просмотр страницы можем выполнить одно действие	
-
-	if(isset($_GET['edittemplates']) && $parseOne)
-	{
+	if(isset($_GET['edittemplates']))
+	{	
+		// редактирование шаблонов 
+		
 		$ed = new EditTemplates();
 		$render_str = str_replace("{sitecontent_admin}",$ed->LoadTemplate($render_str), $render_str);	
 
-		$parseOne = false;
 	}	
-
-	// работа с категориями
-	if(isset($_GET['category']) && $parseOne)
+	else if(isset($_GET['category']))
 	{	
+		// работа с категориями
+		
 		$message = '';
 		$nc = new Category();
 		
@@ -115,14 +102,11 @@ if(userPriviliges::IsAdministrator())
 		}
 				
 		$render_str = str_replace("{sitecontent_admin}",$nc->GetCategoryList($render_str), $render_str);	
-
-		$parseOne = false;
 	}				
-
-	// выводим список feedback новостей
-	if(isset($_GET['feedbacklist']) && $parseOne)
+	else if(isset($_GET['feedbacklist']))
 	{	
-			
+		// выводим список feedback новостей	
+		
 		$message = '';
 		$fb = new FeedBack();	
 			
@@ -132,36 +116,26 @@ if(userPriviliges::IsAdministrator())
 		}	
 	
 		$render_str = str_replace("{sitecontent_admin}",$fb->FeedbackMessageList($render_str), $render_str);
-		
-		$parseOne = false;
 	}				
-	
-
-	// страница для работы с базой данных
-	if(isset($_GET['dbtools']) && $parseOne)
-	{		
+	else if(isset($_GET['dbtools']))
+	{	
+		// страница для работы с базой данных
+		
 		$message = '';
-			
 		$databasetools = new dbtools();
 		
 		if($_GET['dbtools'] =='optimize')
-		{
 			$message = $databasetools->optimize();
-		}	
 		
 		if($_GET['dbtools'] =='repair')
-		{
 			$message = $databasetools->repair();
-		}		
-
-		$render_str = str_replace("{sitecontent_admin}", $databasetools->LoadTemplate($render_str ,$message), $render_str);
-		$parseOne = false;
-	}			
 		
-	
-	// форма изменения пароля и имени рользователя
-	if(isset($_GET['chusernameandpass']) && $parseOne)
-	{		
+		$render_str = str_replace("{sitecontent_admin}", $databasetools->LoadTemplate($render_str ,$message), $render_str);
+	}			
+	else if(isset($_GET['chusernameandpass']))
+	{	
+		// форма изменения пароля и имени рользователя
+		
 		$message = '';
 	
 		if($_GET['chusernameandpass'] == 'change')
@@ -172,13 +146,11 @@ if(userPriviliges::IsAdministrator())
 		}	
 
 		$render_str = str_replace("{sitecontent_admin}", userPriviliges::LoadChangepasswordForm($message), $render_str);
-		$parseOne = false;
 	}			
-	
-	
-	// загружаем форму загрузки файлов
-	if(isset($_GET['uploadfilelist']) && $parseOne)
-	{		
+	else if(isset($_GET['uploadfilelist']))
+	{	
+		// загружаем форму загрузки файлов
+		
 		$message = '';
 		$upfileorm = new UploadFile();		
 		// загрузка файлов
@@ -192,13 +164,10 @@ if(userPriviliges::IsAdministrator())
 			$upfileorm->DeleteUploadFile($_GET['deleteuploadfile']);		
 
 		$render_str = str_replace("{sitecontent_admin}", $upfileorm->LoadTemplate($message).$upfileorm->GetUploadDirectoryList($render_str), $render_str);
-		$parseOne = false;
 	}		
-		
-	
-	// удаление статической страницы
-	if(isset($_GET['staticpagedelete']) and $parseOne)
+	else if(isset($_GET['staticpagedelete']))
 	{	
+		// удаление статической страницы
 		
 		$spage = new Pages();
 		
@@ -207,48 +176,33 @@ if(userPriviliges::IsAdministrator())
 		
 		// показываем список страниц
 		$render_str = str_replace("{sitecontent_admin}", $spage->GetStaticPageList($render_str), $render_str);
-		$parseOne = false;
 	}		
-	
-	// показывание списка статических страниц
-	if(isset($_GET['staticpagelist']) and $parseOne)
+	else if(isset($_GET['staticpagelist']))
 	{	
+		// показывание списка статических страниц	
 		
 		$spage = new Pages();	
 		$render_str = str_replace("{sitecontent_admin}", $spage->GetStaticPageList($render_str), $render_str);
-		
-		
-		$parseOne = false;
+
 	}			
-	
-	// добавление статической страницы 
-	if(isset($_GET['staticpageadd']) and $parseOne)
+	else if(isset($_GET['staticpageadd']))
 	{	
+		// добавление статической страницы 
 		
 		$spage = new Pages();
-		
-		
 		$render_str = str_replace("{sitecontent_admin}", $spage->AddOrUpdate(), $render_str);
-		
-		
-		$parseOne = false;
 	}		
-	
-	
-	// добавление- редактирование статической страницы диалоговое окно
-	if(isset($_GET['staticpageedit']) and $parseOne)
+	else if(isset($_GET['staticpageedit']))
 	{	
+		// добавление- редактирование статической страницы диалоговое окно
 		
 		$spage = new Pages();
-		
 		$render_str = str_replace("{sitecontent_admin}", $spage->LoadEditPage($_GET['staticpageedit']), $render_str);
-		
-		$parseOne = false;
 	}
-		
-	// просмотр добавленных новостей	
-	if(isset($_GET['listnews']) and $parseOne)
+	else if(isset($_GET['listnews']))
 	{	
+		// просмотр добавленных новостей	
+		
 		if(isset($_GET['deleteid']))	// удаляем новость
 		{
 			$ad = new addnews();
@@ -262,13 +216,12 @@ if(userPriviliges::IsAdministrator())
 		$nl = new listNews(); 
 		
 		$render_str = str_replace("{sitecontent_admin}", $nl->getnews($render_str,ADMINPANEL_NEWSPERPAGE, $page), $render_str);
-		
-		$parseOne = false;
+
 	}
-	
-	//страница настроек
-	if(isset($_GET['config']) and $parseOne)
+	else if(isset($_GET['config']))
 	{	
+		//страница настроек
+		
 		$s = new EngineSettings();
 		$message = '';
 		if($_GET['config'] =='save')
@@ -279,22 +232,21 @@ if(userPriviliges::IsAdministrator())
 		}
 		
 		$render_str = str_replace("{sitecontent_admin}", $s->LoadSettingsFileAsTemplate($render_str, $message), $render_str);
-		
-		$parseOne = false;
 	}
-	
-	// редактирование новостей	
-	$ad = new addnews();	
-	if(isset($_GET['id']) and $parseOne)
-	{	
-		$ad->editNews($_GET['id']);
-		$parseOne = false;
-	}
-	else 
+	else if(isset($_GET['id']))
 	{
+		// редактирование новостей
+		
+		$ad = new addnews();
+		$ad->editNews($_GET['id']);
+	}
+	else
+	{
+		$ad = new addnews();	
 		// удаляем если есть сиссионные переменные 
 		$ad->FlushSession();
 	}
+	
 
 
 	// заменяем меню
@@ -311,18 +263,15 @@ if(userPriviliges::IsAdministrator())
 else
 {
 	// пользователь не администратор
-	
+	// скрываем меню
 	$render_str = str_replace("{menu_admin}", '', $render_str);
 	
 	// заменяем шаблон {sitecontent_admin}
 	$render_str = str_replace("{sitecontent_admin}", userPriviliges::render($message), $render_str);
-
 }
 
 // {javascript_admin}
 $render_str = str_replace("{javascript_admin}", "", $render_str);
-
-
 
 // {skin_admin}
 $render_str = str_replace("{skin_admin}", SITE_PATH.'/admin/skin/'.ADMINPANEL_SKIN, $render_str);

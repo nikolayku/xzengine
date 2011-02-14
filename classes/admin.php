@@ -4,7 +4,7 @@
 
 class userPriviliges
 {	
-	// изменяем иня пользователя и пароль
+	// изменяем имя пользователя и пароль
 	static function ChangeUsernameAndPass()
 	{
 		// должно быть определено
@@ -66,7 +66,6 @@ class userPriviliges
 	{	
 		session_start();
 		
-		//if(isset($_COOKIE['login']) and isset($_COOKIE['md5pass']))
 		if(isset($_SESSION['login']) and isset($_SESSION['md5pass']))
 		{	
 			// получаем имя пользователя и пароль
