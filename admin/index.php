@@ -80,9 +80,7 @@ if(isset($_GET['login']))
 
 // если определён $_GET['logout'] то выходим
 if(isset($_GET['logout']))
-{
 	$up->RemoveCookies();	 
-}
 
 
 
@@ -288,7 +286,7 @@ if($up->IsAdministrator())
 		$parseOne = false;
 	}
 	
-	// резактирование новостей	
+	// редактирование новостей	
 	$ad = new addnews();	
 	if(isset($_GET['id']) and $parseOne)
 	{	

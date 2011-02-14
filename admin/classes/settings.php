@@ -263,7 +263,7 @@ function SetMaxUplodedFileSize(maxuploadfilesize)
 				{	
 					$value = ($isFile) ? is_file($dir.$file) : is_dir($dir.$file);
 						
-					if ($file != "." && $file != ".." && $value) 
+					if ($file != "." && $file != ".." && $file != '.svn' && $value) 
 					{ 	
 						if($file == $current)	// текущ€€ директори€
 							$out = '<option value="'.$file.'">'.$file.'</option>'.$out;	

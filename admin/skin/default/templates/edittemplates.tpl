@@ -20,7 +20,7 @@
 	<input id="editTemplateData" type="hidden" name="editTemplateData"/>  
 <tr>
     <td><div align="center"><br>
-      <textarea id="fileContent" name="fileContent" cols="70" rows="15" wrap="off" class="codepress html">{edittemplatescontent}</textarea>
+      <textarea id="fileContent" name="fileContent" cols="80" rows="45" wrap="off" class="codepress html">{edittemplatescontent}</textarea>
     </div></td>
   </tr>
   <tr>
