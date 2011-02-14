@@ -32,6 +32,7 @@
 require_once('../../config.php');
 require_once('../../classes/admin.php');
 
+
 // проверяем, является ли текущий пользователь администратором
 if(userPriviliges::IsAdministrator() == false)
 {
@@ -42,8 +43,8 @@ if(userPriviliges::IsAdministrator() == false)
 
 
 //config (if your TinyMCE location is different from example, you should also check paths at line ~360)
-$file_root = '../../'.UPLOADFILE_DIRECTORY; 		//where to store files, must be created and writable
-$root_path = ''; 					//path from webroot, without trailing slash. If your page is located in http://www.example.com/john/, this should be '/john'
+$file_root = UPLOADFILE_DIRECTORY; 		//where to store files, must be created and writable
+$root_path = SITE_PATH; 					//path from webroot, without trailing slash. If your page is located in http://www.example.com/john/, this should be '/john'
 $thmb_size = 100;       	//max size of preview thumbnail
 $no_script = false;       //true/false - turns scripts into text files
 $lang = 'en';           	//language (look in /mfm/lang/ for available)
@@ -89,7 +90,8 @@ $mode = 'mce';
 if(isset($_GET['mode'])) { $mode = $_GET['mode']; }
 
 //replaces special characters for latvian and russian lang., and removes all other
-function format_filename($filename) {
+function format_filename($filename)
+{
 	$bads = array(' ','ā','č','ē','ģ','ī','ķ','ļ','ņ','ŗ','š','ū','ž','Ā','Č','Ē','Ģ','Ī','Ķ','Ļ','Ņ','Ŗ','Š','Ū','Ž','$','&','А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','ЫЬ','Э','Ю','Я','а','б','в','г','д','е','ё','ж','з','и','й','к','л','м','н','о','п','р','с','т','у','ф','х','ц','ч','шщ','ъ','ы','ь','э','ю','я');
 	$good = array('-','a','c','e','g','i','k','l','n','r','s','u','z','A','C','E','G','I','K','L','N','R','S','U','Z','s','and','A','B','V','G','D','E','J','Z','Z','I','J','K','L','M','N','O','P','R','S','T','U','F','H','C','C','S','S','T','T','E','Ju','Ja','a','b','v','g','d','e','e','z','z','i','j','k','l','m','n','o','p','r','s','t','u','f','h','c','c','s','t','t','y','z','e','ju','ja');
 	$filename = str_replace($bads,$good,trim($filename));
@@ -99,11 +101,13 @@ function format_filename($filename) {
 }
 
 //convert file size to human readable format
-function byte_convert($bytes) {
+function byte_convert($bytes)
+{
   $symbol = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB');
   $exp = 0;
   $converted_value = 0;
-  if( $bytes > 0 ) {
+  if( $bytes > 0 )
+  {
     $exp = floor( log($bytes)/log(1024) );
     $converted_value = ( $bytes/pow(1024,floor($exp)) );
   }
@@ -133,125 +137,165 @@ function print_tree($dir = '.')
 }
 
 //show file list of given directory
-function print_files($c = '.') {
+function print_files($c = '.')
+{
 	global $root_path, $mode, $thmb_size, $file_class, $lng;
-  echo('<table id="file-list">');
-  $d = opendir($c);
-  $i = 0;
-  while($f = readdir($d)) {
-    if(strpos($f, '.') === 0) continue;
-    $ff = $c . '/' . $f;
-    $ext = strtolower(substr(strrchr($f, '.'), 1));
-    if(!is_dir($ff)) {
-	    echo '<tr' . ($i%2 ? ' class="light"' : ' class="dark"') .'>';
-	    //show preview and different icon, if file is image
-	    $imageinfo = @getimagesize($ff);
-	    if($imageinfo && $imageinfo[2] > 0 && $imageinfo[2]< 4) {
-	    	$resize = '';
-	    	if($imageinfo[0] > $thmb_size or $imageinfo[1] > $thmb_size) {
-		    	if($imageinfo[0] > $imageinfo[1]) {
-						$resize = ' style="width: ' . $thmb_size . 'px;"';
-					} else {
+  	echo('<table id="file-list">');
+  	$d = opendir($c);
+ 	$i = 0;
+  	while($f = readdir($d))
+  	{
+    	if(strpos($f, '.') === 0)
+    		continue;
+    
+    	$ff = $c . '/' . $f;
+    	$ext = strtolower(substr(strrchr($f, '.'), 1));
+    	if(!is_dir($ff))
+    	{
+	    	echo '<tr' . ($i%2 ? ' class="light"' : ' class="dark"') .'>';
+	    	//show preview and different icon, if file is image
+	    	$imageinfo = @getimagesize($ff);
+	    	if($imageinfo && $imageinfo[2] > 0 && $imageinfo[2]< 4)
+	    	{
+	    		$resize = '';
+	    		if($imageinfo[0] > $thmb_size or $imageinfo[1] > $thmb_size)
+	    		{
+		    		if($imageinfo[0] > $imageinfo[1])
+		    			$resize = ' style="width: ' . $thmb_size . 'px;"';
+					else					
 						$resize = ' style="height: ' . $thmb_size . 'px;"';
-					}
 				}
-				if ($imageinfo[2] == 1) {
+				
+				if ($imageinfo[2] == 1)
+				{
 					$imagetype = "image_gif";
-				} elseif ($imageinfo[2] == 2) {
+				}
+				elseif ($imageinfo[2] == 2)
+				{
 					$imagetype = "image_jpg";
-				} elseif ($imageinfo[2] == 3) {
+				}
+				elseif ($imageinfo[2] == 3)
+				{
 					$imagetype = "image_jpg";
-				} else {
+				}
+				else
+				{
 					$imagetype = "image";
 				}
 				echo '<td><a class="file thumbnail ' . $imagetype . '" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '<span><img' . $resize . ' src="' . $root_path . '/' . $ff . '" /></span></a>'; echo '</td>';
-			//known file types
-			} elseif(in_array($ext,$file_class)) {
+				//known file types
+			}
+			elseif(in_array($ext,$file_class))
+			{
 				echo '<td><a class="file file_' . $ext . '" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '</a>'; echo '</td>';
 			//all other files
-			} else {
+			}
+			else
+			{
 				echo '<td><a class="file unknown" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '</a>'; echo '</td>';
-	    }
+	    	}
+	    	
+	    	
 			echo '<td>' . byte_convert(filesize($ff)) . '</td>';
 			echo '<td class="delete"><a href="#" title="' . $lng['delete_title'] . '" onclick="delete_file(\'' . $c . '\',\'' . $f . '\');">' . $lng['delete'] . '</a></td>';
-	    echo '</tr>';
-	    $i++;
-    }
-  }
-  echo('</table>');
+	    	echo '</tr>';
+	    	$i++;
+    	}	// end if(!is_dir($ff))
+  	
+  	} // end while($f = readdir($d))
+  	
+  	echo('</table>');
 }
 
-function delete_directory($dirname) {
+function delete_directory($dirname)
+{
 	if (is_dir($dirname))
 		$dir_handle = opendir($dirname);
-		if (!$dir_handle)
+		
+	if (!$dir_handle)
 			return false;
-			while($file = readdir($dir_handle)) {
-		if ($file != "." && $file != "..") {
+		
+	while($file = readdir($dir_handle))
+	{
+		if ($file != "." && $file != "..")
+		{
 			if (!is_dir($dirname."/".$file))
 				unlink($dirname."/".$file);
 			else
 				delete_directory($dirname.'/'.$file);
-			}
 		}
+	}
+	
 	closedir($dir_handle);
 	rmdir($dirname);
 	return true;
 }
 
 $uploadstatus = 0;
-if(isset($_GET['status'])) { $uploadstatus = $_GET['status']; }
+if(isset($_GET['status']))
+	$uploadstatus = $_GET['status'];
 
 //handles file uploads
-if(isset($_FILES['new_file']) && isset($_POST['return'])) {
-	if(is_dir($_POST['return'])) {
+if(isset($_FILES['new_file']) && isset($_POST['return']))
+{
+	if(is_dir($_POST['return']))
+	{
 		$handle = new upload($_FILES['new_file']);
-	  if ($handle->uploaded) {
-      $handle->file_new_name_body   = format_filename(substr($_FILES['new_file']['name'],0,-4));
-      //resize image. more options coming soon.
-      if(isset($_POST['new_resize']) && $_POST['new_resize'] > 0) {
-	      $handle->image_resize         = true;
-	      $handle->image_x              = (int)$_POST['new_resize'];
-	      $handle->image_ratio_y        = true;
-      }
-      if(isset($_POST['new_greyscale']) && $_POST['new_greyscale']) {
-				$handle->image_greyscale      = true;
-			}
-      if(isset($_POST['new_rotate']) && $_POST['new_rotate'] == 90 or $_POST['new_rotate'] == 180 or $_POST['new_rotate'] == 270) {
-				$handle->image_rotate      		= $_POST['new_rotate'];
-			}
+	  	
+	  	if ($handle->uploaded)
+	  	{
+      		$handle->file_new_name_body   = format_filename(substr($_FILES['new_file']['name'],0,-4));
+      		//resize image. more options coming soon.
+      		if(isset($_POST['new_resize']) && $_POST['new_resize'] > 0)
+      		{
+	      		$handle->image_resize         = true;
+	      		$handle->image_x              = (int)$_POST['new_resize'];
+	      		$handle->image_ratio_y        = true;
+      		}
+      		
+      		if(isset($_POST['new_greyscale']) && $_POST['new_greyscale'])
+      			$handle->image_greyscale      = true;
+			
+      		if(isset($_POST['new_rotate']) && $_POST['new_rotate'] == 90 or $_POST['new_rotate'] == 180 or $_POST['new_rotate'] == 270)
+      			$handle->image_rotate      		= $_POST['new_rotate'];
+			
 			$handle->mime_check = $no_script;
 			$handle->no_script = $no_script;
-      $handle->process($_POST['return'] . '/');
-      if ($handle->processed) {
-        $handle->clean();
-        $uploadstatus = 1;
-      } else {
+     		$handle->process($_POST['return'] . '/');
+      		
+      		if($handle->processed)
+      		{
+        		$handle->clean();
+        		$uploadstatus = 1;
+      		}else
+      		{
 				//uncomment for upload debugging
-        //echo 'error : ' . $handle->error;
-        $uploadstatus = 2;
-      }
-	  }
-	} else {
-		$uploadstatus = 3;
+        		//echo 'error : ' . $handle->error;
+        		$uploadstatus = 2;
+      		}
+	  	}	// if ($handle->uploaded
 	}
+	else
+		$uploadstatus = 3;
 }
 
 //remove unnecessary folder
-if(isset($_GET['deletefolder'])) {
-	if(is_dir($_GET['deletefolder'])) {
-		if(delete_directory($_GET['deletefolder'])) {
-      header('Location: mfm.php?status=4');
-		} else {
-      $uploadstatus = 5;
-		}
-	} else {
-    $uploadstatus = 6;
+if(isset($_GET['deletefolder']))
+{
+	if(is_dir($_GET['deletefolder']))
+	{
+		if(delete_directory($_GET['deletefolder']))
+			header('Location: mfm.php?status=4');
+		else
+      		$uploadstatus = 5;
 	}
+	else
+		$uploadstatus = 6;
 }
 
 //display only directory tree for dynamic AHAH requests
-if(isset($_GET['viewtree'])) {
+if(isset($_GET['viewtree']))
+{
 ?>
 			<ul class="dirlist">
 				<li><a href="<?php echo $root_path . '/' . $file_root; ?>/" onclick="load('mfm.php?viewdir=<?php echo $file_root; ?>','view-files'); return false;"><?php echo $file_root; ?></a> <a href="#" onclick="load('mfm.php?viewtree=true','view-tree'); return false;" id="refresh-tree"><?php echo $lng['refresh']; ?></a>
@@ -315,47 +359,61 @@ if(isset($_GET['viewdir'])) {
 <?php
 
 	//create directory and show results
-	if(isset($_GET['newdir'])) {
-    $new_title = format_filename($_GET['newdir']);
-	  if(!is_dir($_GET['viewdir'] . '/' . $new_title)) {
-			if(mkdir($_GET['viewdir'] . '/' . $new_title, 0777)) {
+	if(isset($_GET['newdir']))
+	{
+    	$new_title = format_filename($_GET['newdir']);
+	  	if(!is_dir($_GET['viewdir'] . '/' . $new_title))
+	  	{
+			if(mkdir($_GET['viewdir'] . '/' . $new_title, 0777))
 				echo '<p class="successful">&quot;' . $new_title . '&quot;' . $lng['message_created_folder'] . '</p>';
-			} else {
+			else
 				echo '<p class="failed">' . $lng['message_cannot_create'] . '&quot;' . $new_title . '&quot;!<br />' . $lng['message_cannot_write'] . '</p>';
-			}
-		} else {
-			echo '<p class="failed">' . $lng['message_cannot_create'] . '&quot;' . $new_title . '&quot;!<br />' . $lng['message_exists'] . '</p>';
 		}
+		else
+			echo '<p class="failed">' . $lng['message_cannot_create'] . '&quot;' . $new_title . '&quot;!<br />' . $lng['message_exists'] . '</p>';
 	}
 	
 	//remove unnecessary files
-	if(isset($_GET['deletefile'])) {
-		if(!file_exists($_GET['viewdir'] . '/' . $_GET['deletefile'])) {
+	if(isset($_GET['deletefile']))
+	{
+		if(!file_exists($_GET['viewdir'] . '/' . $_GET['deletefile']))
 			echo '<p class="failed">' . $lng['message_cannot_delete_nonexist'] . '</p>';
-		} else {
-			if(unlink($_GET['viewdir'] . '/' . $_GET['deletefile'])) {
+		else
+		{
+			if(unlink($_GET['viewdir'] . '/' . $_GET['deletefile']))
 				echo '<p class="successful">' . $lng['message_deleted'] . '</p>';
-			} else {
+			else
 				echo '<p class="failed">' . $lng['message_cannot_delete'] . '</p>';
-			}
 		}
 	}
 	
 	//show status messages by code
-	if(isset($_GET['status'])) {
+	if(isset($_GET['status']))
+	{
 	  //upload file
-		if($_GET['status'] == 1) {
+		if($_GET['status'] == 1)
+		{
 			echo '<p class="successful">' . $lng['message_uploaded'] . '</p>';
-		} elseif($_GET['status'] == 2) {
+		}
+		elseif($_GET['status'] == 2)
+		{
 			echo '<p class="failed">' . $lng['message_upload_failed'] . '</p>';
-		} elseif($_GET['status'] == 3) {
+		}
+		elseif($_GET['status'] == 3)
+		{
 			echo '<p class="failed">' . $lng['message_wrong_dir'] . '</p>';
 		//remove directory
-		} elseif($_GET['status'] == 4) {
+		}
+		elseif($_GET['status'] == 4)
+		{
 			echo '<p class="successful">' . $lng['message_folder_deleted'] . '</p>';
-		} elseif($_GET['status'] == 5) {
+		}
+		elseif($_GET['status'] == 5)
+		{
 			echo '<p class="failed">' . $lng['message_cant_delete_folder'] . '</p>';
-		} elseif($_GET['status'] == 6) {
+		}
+		elseif($_GET['status'] == 6)
+		{
 			echo '<p class="failed">' . $lng['message_folder_not_exist'] . '</p>';
 		}
 	}
@@ -432,8 +490,11 @@ if(isset($_GET['viewdir'])) {
     function submit_url(URL) {
       var win = tinyMCEPopup.getWindowArg("window");
       win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
-      if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
-      if (win.ImageDialog.showPreviewImage) win.ImageDialog.showPreviewImage(URL);
+      if (win.ImageDialog.getImageData) 
+      	win.ImageDialog.getImageData();
+      if (win.ImageDialog.showPreviewImage) 
+      	win.ImageDialog.showPreviewImage(URL);
+      
       tinyMCEPopup.close();
     }
     <?php } ?>
