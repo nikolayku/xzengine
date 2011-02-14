@@ -13,8 +13,7 @@
           <td width="348" align="left" valign="top" class="BorderBlank"><p>
 			<span class="SiteContent"><a href="./index.php?category">Разделы сайта</a></span><br />
 			<span class="SiteContent"><a href="./index.php?edittemplates">Редактирование шаблонов</a></span><br />
-			<span class="SiteContent"><a href="./index.php?staticpageedit">Создать статическую страницу</a></span><br />
-            	<span class="SiteContent"><a href="./index.php?staticpagelist">Редактирование статических страниц</a></span><br />
+            	<span class="SiteContent"><a href="./index.php?staticpagelist">Статические страницы</a></span><br />
             	<span class="SiteContent"><a href="./index.php?dbtools">Работа с БД</a></span><br>
 			<span class="SiteContent"><a href="./index.php?uploadfilelist">Загрузить файл</a></span><br>
 			<span class="SiteContent"><a href="./index.php?chusernameandpass">Изменить имя пользователя и пароль</a></span></p>
