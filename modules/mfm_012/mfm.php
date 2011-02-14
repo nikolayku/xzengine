@@ -115,25 +115,27 @@ function byte_convert($bytes)
 }
 
 //show recursive directory tree
-function print_tree($dir = '.')
+function print_tree($startDir = '.')
 {
 	global $root_path;
 	echo '<ul class="dirlist">';
-	$d = opendir($dir);
-	while($f = readdir($d))
-	{
-		if(strpos($f, '.') === 0) 
+	$directoryIterator = opendir($startDir);
+	while($file = readdir($directoryIterator))
+	{	
+		if($file =='.' || $file =='..' || $file == '.svn')
 			continue;
 		
-		$ff = $dir . '/' . $f;
+		$ff = $startDir.'/'.$file;
 		if(is_dir($ff))
 		{
-		  echo '<li><a href="' . $root_path . '/' . $ff . '/" onclick="load(\'mfm.php?viewdir=' . $ff . '\',\'view-files\'); return false;">' . $f . '</a>';
-				print_tree($ff);
-		  echo '</li>';
+		  	echo '<li><a href="'.$root_path.'/'.$ff.'/" onclick="load(\'mfm.php?viewdir='.$ff.'\',\'view-files\'); return false;">'.$file.'</a>';
+			print_tree($ff);
+		  	echo '</li>';
 		}
 	}
 	echo '</ul>';
+	
+	closedir($directoryIterator);
 }
 
 //show file list of given directory
