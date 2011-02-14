@@ -1,3 +1,4 @@
+<a href="./index.php?staticpageedit">Добавить ещё одну</a><br><br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableborder">
           <tr>
             <td width="71%">{static_pagename}&nbsp;&nbsp;&nbsp;<a href="../{static_page_link}">&gt;&gt;&gt;</a></td>

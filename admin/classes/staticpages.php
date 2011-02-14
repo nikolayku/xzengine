@@ -57,7 +57,7 @@ class Pages
 		
 		if(AbstractDataBase::Instance()->num_rows($q) == 0)
 		{
-			$error = 'База данных не содержит не одной статичекой страницы.';
+			$error = 'База данных не содержит не одной статичекой страницы. <a href="./index.php?staticpageedit">Создать</a>';
 			return $error;
 		}
 		
