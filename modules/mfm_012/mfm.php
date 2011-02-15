@@ -440,7 +440,7 @@ if(isset($_GET['viewdir'])) {
   <title><?php echo $lng['window_title']; ?></title>
   <link rel="stylesheet" href="mfm/style.css" type="text/css" />
   <link rel="stylesheet" href="<?php echo $root_path; ?>/tiny_mce/themes/advanced/skins/default/dialog.css" type="text/css" />
-  <script type="text/javascript" src="<?php echo $root_path; ?>/tiny_mce/tiny_mce_popup.js"></script>
+  <script type="text/javascript" src="../../editor/tiny_mce_popup.js"></script>
 	<script type="text/javascript">
 		//<![CDATA[
 		
