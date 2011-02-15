@@ -25,8 +25,7 @@
 		* fix bugs in IE and Opera	
 *************************************************************************/
 
-//user authentification (add your own, if you need one)
-//if (NO AUTENTIFICATION) { die('Unauthorized!'); }
+// модифицировал Nikolay Kulchicki для xzengine
 
 
 require_once('../../config.php');
@@ -124,9 +123,9 @@ function print_tree($startDir = '.')
 	{	
 		if($file =='.' || $file =='..' || $file == '.svn')
 			continue;
-		
+				
 		$ff = $startDir.'/'.$file;
-		if(is_dir($ff))
+		if(is_dir('../../'.$ff))
 		{
 		  	echo '<li><a href="'.$root_path.'/'.$ff.'/" onclick="load(\'mfm.php?viewdir='.$ff.'\',\'view-files\'); return false;">'.$file.'</a>';
 			print_tree($ff);
@@ -150,53 +149,59 @@ function print_files($c = '.')
     	if(strpos($f, '.') === 0)
     		continue;
     
-    	$ff = $c . '/' . $f;
+    	$ff = $c .'/'.$f;
     	$ext = strtolower(substr(strrchr($f, '.'), 1));
-    	if(!is_dir($ff))
-    	{
-	    	echo '<tr' . ($i%2 ? ' class="light"' : ' class="dark"') .'>';
-	    	//show preview and different icon, if file is image
-	    	$imageinfo = @getimagesize($ff);
-	    	if($imageinfo && $imageinfo[2] > 0 && $imageinfo[2]< 4)
-	    	{
-	    		$resize = '';
-	    		if($imageinfo[0] > $thmb_size or $imageinfo[1] > $thmb_size)
-	    		{
-		    		if($imageinfo[0] > $imageinfo[1])
-		    			$resize = ' style="width: ' . $thmb_size . 'px;"';
-					else					
-						$resize = ' style="height: ' . $thmb_size . 'px;"';
-				}
-				
-				if ($imageinfo[2] == 1)
-					$imagetype = "image_gif";
-				elseif ($imageinfo[2] == 2)
-					$imagetype = "image_jpg";
-				elseif ($imageinfo[2] == 3)
-					$imagetype = "image_jpg";
-				else
-					$imagetype = "image";
-				
-				echo '<td><a class="file thumbnail ' . $imagetype . '" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '<span><img' . $resize . ' src="' . $root_path . '/' . $ff . '" /></span></a>'; 
-				echo '</td>';
-				//known file types
-			}
-			elseif(in_array($ext,$file_class))
+    	
+		// skip directory
+		if(is_dir('../../'.$ff))
+			continue;
+			
+
+		echo '<tr' . ($i%2 ? ' class="light"' : ' class="dark"') .'>';
+		//if file is image, show preview and different icon
+		$imageinfo = @getimagesize('../../'.$ff);
+		if($imageinfo && $imageinfo[2] > 0 && $imageinfo[2]< 4)
+		{
+			$resize = '';
+			if($imageinfo[0] > $thmb_size or $imageinfo[1] > $thmb_size)
 			{
-				echo '<td><a class="file file_' . $ext . '" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '</a>'; echo '</td>';
-			//all other files
+				if($imageinfo[0] > $imageinfo[1])
+					$resize = ' style="width: ' . $thmb_size . 'px;"';
+				else					
+					$resize = ' style="height: ' . $thmb_size . 'px;"';
 			}
+			
+			if ($imageinfo[2] == 1)
+				$imagetype = "image_gif";
+			elseif ($imageinfo[2] == 2)
+				$imagetype = "image_jpg";
+			elseif ($imageinfo[2] == 3)
+				$imagetype = "image_jpg";
 			else
-			{
-				echo '<td><a class="file unknown" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '</a>'; echo '</td>';
-	    	}
-	    	
-	    	
-			echo '<td>' . byte_convert(filesize($ff)) . '</td>';
-			echo '<td class="delete"><a href="#" title="' . $lng['delete_title'] . '" onclick="delete_file(\'' . $c . '\',\'' . $f . '\');">' . $lng['delete'] . '</a></td>';
-	    	echo '</tr>';
-	    	$i++;
-    	}	// end if(!is_dir($ff))
+				$imagetype = "image";
+			
+			echo '<td><a class="file thumbnail ' . $imagetype . '" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '<span><img' . $resize . ' src="' . $root_path . '/' . $ff . '" /></span></a>'; 
+			echo '</td>';
+		}
+		elseif(in_array($ext, $file_class))
+		{	
+			// if file extension in registered extensions
+			echo '<td><a class="file file_' . $ext . '" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '</a>'; 
+			echo '</td>';
+		}
+		else
+		{	
+			//all other files
+			echo '<td><a class="file unknown" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '</a>'; 
+			echo '</td>';
+		}
+		
+		
+		echo '<td>' . byte_convert(filesize("../../".$ff)) . '</td>';
+		echo '<td class="delete"><a href="#" title="' . $lng['delete_title'] . '" onclick="delete_file(\'' . $c . '\',\'' . $f . '\');">' . $lng['delete'] . '</a></td>';
+		echo '</tr>';
+		$i++;
+
   	
   	} // end while($f = readdir($d))
   	
@@ -233,8 +238,9 @@ if(isset($_GET['status']))
 
 //handles file uploads
 if(isset($_FILES['new_file']) && isset($_POST['return']))
-{
-	if(is_dir($_POST['return']))
+{	
+	$distanationDirectory = "../../".$_POST['return'];
+	if(is_dir($distanationDirectory))
 	{
 		$handle = new upload($_FILES['new_file']);
 	  	
@@ -257,7 +263,7 @@ if(isset($_FILES['new_file']) && isset($_POST['return']))
 			
 			$handle->mime_check = $no_script;
 			$handle->no_script = $no_script;
-     		$handle->process($_POST['return'] . '/');
+     		$handle->process($distanationDirectory.'/');
       		
       		if($handle->processed)
       		{
@@ -376,7 +382,7 @@ if(isset($_GET['viewdir'])) {
 	if(isset($_GET['deletefile']))
 	{	
 		$fileFullPath = "../../".$_GET['viewdir'].'/'.$_GET['deletefile'];
-		echo $fileFullPath;
+		/*echo $fileFullPath;*/
 		if(!file_exists($fileFullPath ))
 			echo '<p class="failed">' . $lng['message_cannot_delete_nonexist'] . '</p>';
 		else
