@@ -70,19 +70,20 @@ class dbtools
 		$render_str = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/dbtools.tpl");
 		
 		// заменяем тег {javascript_admin} в меню главного шаблона
-		$JavaScript = 
-'<script src="./javascript/common.js" type="text/javascript" language="javascript"></script>';
+		$JavaScript = '<script src="./javascript/common.js" type="text/javascript" language="javascript"></script>';
+		
 		$main_page_template = str_replace("{javascript_admin}", $JavaScript, $main_page_template);
 		
 		// {message}	
 		$render_str = str_replace("{message}", $message, $render_str);
 		
 		// получаем список файлов 
+		// FIXME: было бы неплохо убрать эту копипасту в отдельную функцию
 		$filelist = '';
 		$dh = opendir('backup');
 		while (($file = readdir($dh)) !== false) 
 		{
-			if ($file != "." && $file != ".." && $file != 'index.php') 
+			if ($file != "." && $file != ".." && $file != ".svn" && $file != 'index.php') 
 			{
 				 $filelist = $filelist.'<option value="'.$file.'">'.$file.'</option>';
 			}	

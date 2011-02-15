@@ -15,7 +15,7 @@
 			<span class="SiteContent"><a href="./index.php?edittemplates">Редактирование шаблонов</a></span><br />
             	<span class="SiteContent"><a href="./index.php?staticpagelist">Статические страницы</a></span><br />
             	<span class="SiteContent"><a href="./index.php?dbtools">Работа с БД</a></span><br>
-			<span class="SiteContent"><a href="./index.php?uploadfilelist">Загрузить файл</a></span><br>
+			<span class="SiteContent"><a href="../modules/mfm_012/mfm.php" >Загрузить файл</a></span><br>
 			</p>
             </td>
         </tr>

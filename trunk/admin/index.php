@@ -27,7 +27,6 @@ require_once './classes/info.php';
 require_once '../modules/gzip.php';
 require_once './classes/settings.php';
 require_once './classes/staticpages.php';
-require_once './classes/uploadfile.php';
 require_once './classes/commonfunctions.php';
 require_once './classes/dbtools.php';
 require_once '../classes/feedback.php';
@@ -89,9 +88,7 @@ if(userPriviliges::IsAdministrator())
 		$nc = new Category();
 		
 		if($_GET['category'] == 'add')		// добавляем категорию
-		{
 			$nc->AddCategory($render_str);	
-		}
 		else if($_GET['category']== 'delete') // удаляем категорию
 		{	
 			$ID = 0;
@@ -111,10 +108,8 @@ if(userPriviliges::IsAdministrator())
 		$fb = new FeedBack();	
 			
 		if(isset($_GET['delete']))
-		{
 			$fb->FeedbackDelete($_GET['delete']);
-		}	
-	
+		
 		$render_str = str_replace("{sitecontent_admin}",$fb->FeedbackMessageList($render_str), $render_str);
 	}				
 	else if(isset($_GET['dbtools']))
