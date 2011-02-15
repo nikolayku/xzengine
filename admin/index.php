@@ -262,6 +262,9 @@ $render_str = str_replace("{sitepath_admin}", SITE_PATH, $render_str);
 //{forum_path_admin}	
 $render_str = str_replace("{forum_path_admin}", FORUM_PATH, $render_str);
 
+// {sitepath} - путь к сайту
+$render_str = str_replace("{sitepath}", SITE_PATH, $render_str);
+
 // {debug_log_admin} - тег вывода сообщений об ошибках 
 if(DEBUG_MODE)
 	$render_str = str_replace("{debug_log_admin}", BugReport::Instance()->Flush(), $render_str);

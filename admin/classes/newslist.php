@@ -43,24 +43,24 @@ class listNews
 		
 		// добавляем форму фильтра 
 		$filter_form_code = 
-'<form id="formfilter" name="formfilter" method="post" action="index.php?listnews&applyfilter">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="17%" align="center">Фильтр по: </td>
-    <td width="26%"><label>
-      <input name="news_fixed" type="checkbox" id="news_fixed" value="1" '.(($news_fixed == 1)?'checked="checked"':'').' />
-      Зафиксированые новости</label></td>
-    <td width="23%"><label>
-      <input name="news_approve" type="checkbox" id="news_approve" value="1" '.(($news_approve == 1)?'checked="checked"':'').' />
-      Провереные новости </label></td>
-    <td width="22%" valign="middle"><label>
-      <input name="news_view" type="checkbox" id="news_view" value="1" '.(($news_view == 1)?'checked="checked"':'').' />
-      Показанные новости</label></td>
-    <td width="12%"><input type="submit" name="Submit" value="Применить" /></td>
-  </tr>
-</table>
+		'<form id="formfilter" name="formfilter" method="post" action="index.php?listnews&applyfilter">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="17%" align="center">Фильтр по: </td>
+			<td width="26%"><label>
+			  <input name="news_fixed" type="checkbox" id="news_fixed" value="1" '.(($news_fixed == 1)?'checked="checked"':'').' />
+			  Зафиксированые новости</label></td>
+			<td width="23%"><label>
+			  <input name="news_approve" type="checkbox" id="news_approve" value="1" '.(($news_approve == 1)?'checked="checked"':'').' />
+			  Провереные новости </label></td>
+			<td width="22%" valign="middle"><label>
+			  <input name="news_view" type="checkbox" id="news_view" value="1" '.(($news_view == 1)?'checked="checked"':'').' />
+			  Показанные новости</label></td>
+			<td width="12%"><input type="submit" name="Submit" value="Применить" /></td>
+		  </tr>
+		</table>
 
-</form>';
+		</form>';
 
 		$outputstr = $filter_form_code.$outputstr;
 
@@ -138,7 +138,10 @@ class listNews
 		$template = str_replace("{newsname}", $row['news_name'], $template);
 
 		// {newslink} 
-		$template = str_replace("{newslink}", $row['news_full_link'], $template);
+		if(SIMPLY_URL)	// если включена поддержка понятной ссылки
+			$template = str_replace("{newslink}", '{sitepath}/news/'.$row['news_id'].'.htm', $template);
+		else // если отключена	
+			$template = str_replace("{newslink}", '{sitepath}/index.php?news='.$row['news_id'], $template);
 		
 		// {newsid} 
 		$template = str_replace("{newsid}", $row['news_id'], $template);
