@@ -119,7 +119,7 @@ function print_tree($startDir = '.')
 {
 	global $root_path;
 	echo '<ul class="dirlist">';
-	$directoryIterator = opendir($startDir);
+	$directoryIterator = opendir("../../".$startDir);
 	while($file = readdir($directoryIterator))
 	{	
 		if($file =='.' || $file =='..' || $file == '.svn')
@@ -143,7 +143,7 @@ function print_files($c = '.')
 {
 	global $root_path, $mode, $thmb_size, $file_class, $lng;
   	echo('<table id="file-list">');
-  	$d = opendir($c);
+  	$d = opendir('../../'.$c);
  	$i = 0;
   	while($f = readdir($d))
   	{
@@ -169,22 +169,16 @@ function print_files($c = '.')
 				}
 				
 				if ($imageinfo[2] == 1)
-				{
 					$imagetype = "image_gif";
-				}
 				elseif ($imageinfo[2] == 2)
-				{
 					$imagetype = "image_jpg";
-				}
 				elseif ($imageinfo[2] == 3)
-				{
 					$imagetype = "image_jpg";
-				}
 				else
-				{
 					$imagetype = "image";
-				}
-				echo '<td><a class="file thumbnail ' . $imagetype . '" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '<span><img' . $resize . ' src="' . $root_path . '/' . $ff . '" /></span></a>'; echo '</td>';
+				
+				echo '<td><a class="file thumbnail ' . $imagetype . '" href="#" onclick="submit_url(\'' . $root_path . '/' . $ff . '\');">' . $f . '<span><img' . $resize . ' src="' . $root_path . '/' . $ff . '" /></span></a>'; 
+				echo '</td>';
 				//known file types
 			}
 			elseif(in_array($ext,$file_class))
@@ -364,9 +358,11 @@ if(isset($_GET['viewdir'])) {
 	if(isset($_GET['newdir']))
 	{
     	$new_title = format_filename($_GET['newdir']);
-	  	if(!is_dir($_GET['viewdir'] . '/' . $new_title))
+    	$fullpathToNewDirectory = "../../".$_GET['viewdir'].'/'.$new_title;
+    	
+	  	if(!is_dir($fullpathToNewDirectory))
 	  	{
-			if(mkdir($_GET['viewdir'] . '/' . $new_title, 0777))
+			if(mkdir($fullpathToNewDirectory, 0777))
 				echo '<p class="successful">&quot;' . $new_title . '&quot;' . $lng['message_created_folder'] . '</p>';
 			else
 				echo '<p class="failed">' . $lng['message_cannot_create'] . '&quot;' . $new_title . '&quot;!<br />' . $lng['message_cannot_write'] . '</p>';
