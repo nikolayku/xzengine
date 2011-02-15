@@ -277,10 +277,11 @@ if(isset($_FILES['new_file']) && isset($_POST['return']))
 
 //remove unnecessary folder
 if(isset($_GET['deletefolder']))
-{
-	if(is_dir($_GET['deletefolder']))
+{	
+	$directoryName = "../../".$_GET['deletefolder'];
+	if(is_dir($directoryName))
 	{
-		if(delete_directory($_GET['deletefolder']))
+		if(delete_directory($directoryName))
 			header('Location: mfm.php?status=4');
 		else
       		$uploadstatus = 5;
@@ -373,12 +374,14 @@ if(isset($_GET['viewdir'])) {
 	
 	//remove unnecessary files
 	if(isset($_GET['deletefile']))
-	{
-		if(!file_exists($_GET['viewdir'] . '/' . $_GET['deletefile']))
+	{	
+		$fileFullPath = "../../".$_GET['viewdir'].'/'.$_GET['deletefile'];
+		echo $fileFullPath;
+		if(!file_exists($fileFullPath ))
 			echo '<p class="failed">' . $lng['message_cannot_delete_nonexist'] . '</p>';
 		else
 		{
-			if(unlink($_GET['viewdir'] . '/' . $_GET['deletefile']))
+			if(unlink($fileFullPath))
 				echo '<p class="successful">' . $lng['message_deleted'] . '</p>';
 			else
 				echo '<p class="failed">' . $lng['message_cannot_delete'] . '</p>';
