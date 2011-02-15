@@ -133,10 +133,7 @@ class Pages
 
 	}
 	
-
-	////////////////////////////////////////////////////////////////////
 	// загружает шаблон
-	////////////////////////////////////////////////////////////////////
 	function LoadEditPage($id = 0, $message = "")
 	{		
 		$static_pagename = "";
@@ -152,8 +149,15 @@ class Pages
 			
 				if($line)
 				{
-					$static_pagename = $line['static_pagename'];
-					$static_text = $line['static_text'];
+					$static_pagename = $line['static_pagename'];	// заголовок страницы
+					$static_text = $line['static_text'];			// содержимое страницы
+					
+					// заменяем путь к сайту на шаблон
+					$static_text = str_replace('{sitepath}', SITE_PATH, $static_text);
+					// заменяем путь к форуму на шаблон
+					$static_text = str_replace('{forum_path}', FORUM_PATH, $static_text);
+					// заменяем путь к форуму на шаблон
+					$static_text = str_replace('{forum_path}', FORUM_PATH, $static_text);
 					
 					session_start();
 					$_SESSION['editstaticpageid'] = $id;
@@ -235,9 +239,7 @@ class Pages
 		return $render_str;
 	}
 
-	/////////////////////////////////////
 	// заменяет в шаблоне страницы теги  {title} и 
-	/////////////////////////////////////
 	function RenderPage($template, $id)
 	{	
 		
