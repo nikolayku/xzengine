@@ -49,6 +49,20 @@ $no_script = false;       //true/false - turns scripts into text files
 $lang = 'en';           	//language (look in /mfm/lang/ for available)
 error_reporting(0);				//'E_ALL' for debugging, '0' for use
 
+//lang
+$lng = array();
+
+$pathToLocalisationFile = './mfm/lang/lang_'.strtolower(SITE_LOC_FILE).'.php';
+if(is_file($pathToLocalisationFile))
+{
+	require($pathToLocalisationFile);
+}
+else
+{
+	echo "Language file not found";
+	exit;
+}
+
 //array of known file types (used for icons)
 $file_class = array(
                 'swf',
@@ -79,9 +93,6 @@ $file_class = array(
 //upload class (see file for credits)
 require('./mfm/class.upload.php');
 
-//lang
-$lng = array();
-require('mfm/lang/lang_' . strtolower($lang) . '.php');
 header("Content-type: text/html; charset=utf-8");
 
 //stand alone or tynimce?
