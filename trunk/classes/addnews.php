@@ -7,17 +7,13 @@
 // добавление новостей
 class addnews
 {
-	/////////////////////////////////
 	// конструктор
-	/////////////////////////////////
 	function __construct()
 	{	
 		session_start();
 	}
 		
-	/////////////////////////////////
 	// удаляет новость из бд
-	/////////////////////////////////
 	function deleteNews($id)
 	{
 		// проверка....
@@ -25,10 +21,8 @@ class addnews
 	}
 		
 
-	/////////////////////////////////
 	// $message - сообщение которое будит выводится
 	// $main_page_template - шаблон главной страницы
-	////////////////////////////////	
 	function render(&$main_page_template, $message = "")
 	{	
 					
@@ -158,15 +152,47 @@ class addnews
 
 				tinyMCE.init({
 				mode : "textareas",
-				theme_advanced_toolbar_location : "top",
-				plugins : "emotions",
+				theme: "advanced",
+				plugins : "advimage,advlink,emotions,inlinepopups",
 				theme_advanced_buttons1 : "justifyleft,justifycenter,justifyfull,justifyright,fontsizeselect,forecolor,separator,bold,italic,underline,strikethrough,separator,link,image,separator,emotions,separator,code",
 				theme_advanced_buttons2 : "",
 				theme_advanced_buttons3 : "",
-				relative_urls : false,
-				convert_urls : false
-				});
+				theme_advanced_buttons4 : "",
+				theme_advanced_toolbar_location : "top",
+				theme_advanced_toolbar_align : "left",
+				theme_advanced_statusbar_location : "bottom",
+				theme_advanced_resizing : true,
 
+
+				relative_urls : false,
+				convert_urls : false,
+				file_browser_callback : MadFileBrowser
+				});
+				
+				function MadFileBrowser(field_name, url, type, win)
+				{
+				  tinyMCE.activeEditor.windowManager.open({
+					  file : "./modules/mfm_012/mfm.php?field=" + field_name + "&url=" + url + "",
+					  title : "File Manager",
+					  width : 900,
+					  height : 450,
+					  resizable : "no",
+					  inline : "yes",
+					  close_previous : "no"
+				  }, {
+					  window : win,
+					  input : field_name
+				  });
+				  return false;
+				}
+				
+				</script>
+				
+				<script type="text/javascript">
+				function BrowseFiles(popurl)
+				{
+					var winpops=window.open(popurl,"","status = 1, height = 450, width = 900, left = 200, top = 180, resizable = 0")
+				}	
 				</script>';	
 		}
 		else

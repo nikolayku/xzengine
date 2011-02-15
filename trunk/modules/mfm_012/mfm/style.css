@@ -63,12 +63,12 @@ input.number {width: 30px;}
 }
 
 #browser-wrapper #view-tree {
-	width: 150px;
+	width: 200px;
 	border-right: 0;
 }
 
 #browser-wrapper #view-files {
-	width: 428px;
+	width: 628px;
 	border-left: 1px solid #eee;
 }
 
