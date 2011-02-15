@@ -153,6 +153,7 @@ class addnews
 				tinyMCE.init({
 				mode : "textareas",
 				theme: "advanced",
+				language : "en",
 				plugins : "advimage,advlink,emotions,inlinepopups",
 				theme_advanced_buttons1 : "justifyleft,justifycenter,justifyfull,justifyright,fontsizeselect,forecolor,separator,bold,italic,underline,strikethrough,separator,link,image,separator,emotions,separator,code",
 				theme_advanced_buttons2 : "",
