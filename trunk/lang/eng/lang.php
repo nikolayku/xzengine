@@ -24,7 +24,8 @@ define("lang_addnews_invalidpiccode", 'Wrong number from image, please try again
 // show news
 define("show_news_not_found", 'Sorry required news is not found in our database or removed <a href="{sitepath}"> Back to site </a>');
 
-
+// for edit news
+define("news_edit", '<a href="{sitepath}/admin/index.php?id={newsid}">Edit</a>');
 
 
 
