@@ -125,7 +125,16 @@ class viewnews
 	////////////////////
 
 	function replaceTags(&$template, $row)
-	{
+	{	
+		// добавляем ссылку на редактирование новости, если пользователь администратор 
+		if(userPriviliges::IsAdministrator())
+		{
+			$temp = str_replace("{newsid}", $row['news_id'], news_edit);
+			$template = str_replace("{edit}", $temp, $template);
+		}
+		else
+			$template = str_replace("{edit}", '', $template);
+		
 		// {newsname} 
 		$template = str_replace("{newsname}", $row['news_name'], $template);
 		
@@ -163,8 +172,7 @@ class viewnews
 			$template = str_replace("{descrlink}", '{sitepath}/news/'.$row['news_id'].'.htm', $template);
 		else
 			$template = str_replace("{descrlink}", '{sitepath}/index.php?news='.$row['news_id'], $template);
-
-		
+				
 	}
 	
 	///////////////////////

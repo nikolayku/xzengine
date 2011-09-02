@@ -24,6 +24,9 @@ define("lang_addnews_invalidpiccode", 'Неправильно введено число с картинки');
 // show news
 define("show_news_not_found", 'Запрашиваемоя вами новость не найдена в нашей базе данных. Возможно она была удалена или перемещена <a href="{sitepath}"> Назад на сайт</a>');
 
+// for edit news
+define("news_edit", '<a href="{sitepath}/admin/index.php?id={newsid}">Редактировать</a>');
+
 
 
 

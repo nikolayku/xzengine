@@ -248,12 +248,11 @@ $render_str = str_replace("{skin}", '{sitepath}/skin/'.SKIN, $render_str);
 $render_str = str_replace("{versionnumber}", $VERSION_MAJOR.'.'.$VERSION_MINOR.' '.$VERSION_INFO, $render_str);
 
 //{adminpanellink} - ссылка на админ панель, показывается только если пользователь зашёл как администратор
-
 if(userPriviliges::IsAdministrator())
 	$render_str = str_replace("{adminpanellink}", '<a href="'.SITE_PATH.'/admin/index.php">'.lang_goto_adminpanel.'</a>', $render_str);
 else
 	$render_str = str_replace("{adminpanellink}", '', $render_str);	
-
+	
 //{forum_path} - путь к форуму	
 $render_str = str_replace("{forum_path}", FORUM_PATH, $render_str);
 
