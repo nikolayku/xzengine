@@ -106,7 +106,7 @@ class viewnews
 		if($category == 0)
 			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND '.$showInSameCategory.' ORDER BY news_id DESC  LIMIT '.$newsperpage * $page.','.$newsperpage);
 		else
-			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND '.$showInSameCategory.' AND news_category = '.$category.' ORDER BY news_id DESC  LIMIT '.$newsperpage * $page.','.$newsperpage);
+			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_category = '.$category.' ORDER BY news_id DESC  LIMIT '.$newsperpage * $page.','.$newsperpage);
 		
 		if(!$result)
 			return "";
