@@ -82,7 +82,7 @@ $page_news =  new viewnews();
 $readmore = new showfullnews();
 
 $page = 0;
-$category = 0;				// категория 
+$category = 0;				// категория (0 если главная)
 
 // какую страницу выводить
 if(isset($_GET['page']))
@@ -92,7 +92,6 @@ if(isset($_GET['page']))
 // какую категорию выводить
 if(isset($_GET['category']))
 	$category = $_GET['category'];
-
 
 
 // выводим Rss если требуют
@@ -220,7 +219,7 @@ if(isset($_GET['addnews']))  //добавляем новость
 }
 else
 {
-	// удаляем сиссионную информацию 	
+	// удаляем сессионную информацию 	
 	$addn->FlushSession();
 	
 	// показываем список новостей

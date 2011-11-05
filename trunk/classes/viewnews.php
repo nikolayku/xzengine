@@ -63,8 +63,11 @@ class viewnews
 
 	/////////////////////
 	// показыавет новость
+	// newsperpage - количество новостей на страницу
+	// page - страница
+	// category - категория новости, если 0 то главная страница
 	/////////////////////
-	function getnews($newsperpage = 30,$page=0, $category = 0)
+	function getnews($newsperpage = 30, $page=0, $category = 0)
 	{	
 		if($page < 0)
 			$page = 0;
@@ -77,8 +80,13 @@ class viewnews
 		// загружаем шаблон
 		$template = file_get_contents("./skin/".SKIN."/templates/news.tpl");
 		
-		// получаем зафиксированные новости
-		$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 1 AND news_approve = 1 AND news_view = 1 ORDER BY news_id DESC' );
+		// фильтр по новостям
+		$showInSameCategory = 'news_show_in_category = 1';
+		if($category == 0)
+			$showInSameCategory = 'news_show_in_category = 0';
+		
+		// получаем зафиксированные новости	
+		$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 1 AND news_approve = 1 AND '.$showInSameCategory.' ORDER BY news_id DESC');
 		
 		if(!$result)
 			return "";
@@ -96,12 +104,9 @@ class viewnews
 		// получаем не зафиксированные новости
 		$result = '';	
 		if($category == 0)
-		{	$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_view = 1 ORDER BY news_id DESC  LIMIT '.$newsperpage * $page.','.$newsperpage);
-		}
+			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND '.$showInSameCategory.' ORDER BY news_id DESC  LIMIT '.$newsperpage * $page.','.$newsperpage);
 		else
-		{	$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_view = 1 AND news_category = '.$category.' ORDER BY news_id DESC  LIMIT '.$newsperpage * $page.','.$newsperpage);
-		}
-
+			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND '.$showInSameCategory.' AND news_category = '.$category.' ORDER BY news_id DESC  LIMIT '.$newsperpage * $page.','.$newsperpage);
 		
 		if(!$result)
 			return "";
@@ -113,10 +118,8 @@ class viewnews
 			
 			$outputstr = $outputstr.$temp;
 		}
-		
-		
+			
 		return $outputstr;
-		
 	}
 
 
@@ -156,13 +159,11 @@ class viewnews
 				$template = str_replace("{newslink}", '{sitepath}/readmore/'.$row['news_id'].'.htm', $template);
 			else
 				$template = str_replace("{newslink}", '{sitepath}/index.php?readmore='.$row['news_id'], $template);
-
 		}
 		else
 		{	
 			// показываем ссылку 
 	 		$template = str_replace("{newslink}", $row['news_full_link'], $template);
-
 		}	
 		// {newsautor}   
 		$template = str_replace("{newsautor}", $row['news_autor'], $template);
@@ -186,19 +187,18 @@ class viewnews
 			$template = str_replace("{nextpage}", "", $template);
 			return $template;
 		}
-		
+
 		// подсчитываем количество всех страниц
 		$result = '';
 		if($category == 0)
-			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_view = 1 ' );
+			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_show_in_category = 0 ' );
 		else
-			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_view = 1 AND news_category = '.$category );
+			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_show_in_category = 1 AND news_category = '.$category );
 				
 
 		if(!$result)
-		{	
 			return "";
-		}
+		
 		$news = AbstractDataBase::Instance()->num_rows($result);
 		
 		if(($news < $newsperpage))
@@ -266,12 +266,11 @@ class viewnews
 		
 		// получаем общее количество новостей
 		if($category == 0)
-			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_view = 1 ' );
+			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_show_in_category = 0 ' );
 		else
-			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_view = 1 AND news_category = '.$category );
+			$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_show_in_category = 1 AND news_category = '.$category );
 			
 	
-
 		if(!$result)
 			return "";
 		

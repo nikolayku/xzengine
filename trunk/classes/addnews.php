@@ -1,10 +1,6 @@
 <?php
 
 // добавление новостей
-
-
-
-// добавление новостей
 class addnews
 {
 	// конструктор
@@ -20,12 +16,10 @@ class addnews
 		AbstractDataBase::Instance()->query('DELETE FROM '.DATABASE_TBLPERFIX.'news WHERE news_id="'.$id.'"');		
 	}
 		
-
 	// $message - сообщение которое будит выводится
 	// $main_page_template - шаблон главной страницы
 	function render(&$main_page_template, $message = "")
-	{	
-					
+	{						
 		$newsname = "";
 		if(isset($_POST['news_name']))
 			$newsname = $_POST['news_name'];
@@ -67,11 +61,7 @@ class addnews
 					$newscategory = $newscategory.'<option value="'.$line['category_id'].'">'.$line['category_name'].'</option>';
 			}
 			else	
-			{
 				$newscategory = $newscategory.'<option value="'.$line['category_id'].'">'.$line['category_name'].'</option>';
-			
-			}
-			
 		}	
 		
 	
@@ -235,14 +225,12 @@ class addnews
 	// {private}
 	$t = "";
 	
-
 	if(userPriviliges::IsAdministrator())
 	{
 		//
 		$t = file_get_contents("./skin/".SKIN."/templates/options.tpl");
 		
-		// заменяем теги
-		
+		// если редактирование
 		if(isset($_SESSION['edit_id']))
 		{
 			// news_fixed
@@ -254,15 +242,6 @@ class addnews
 					$t = str_replace("{news_fixed_ch}", '', $t);
 			}
 			
-			// news_view
-			if(isset($_SESSION['news_view']))
-			{	
-				if($_SESSION['news_view'] == 1)
-					$t = str_replace("{news_view_ch}", 'checked="checked"', $t);
-				else	
-					$t = str_replace("{news_view_ch}", '', $t);
-			}
-			
 			// news_approve
 			if(isset($_SESSION['news_approve']))
 			{	
@@ -271,15 +250,23 @@ class addnews
 				else	
 					$t = str_replace("{news_approve_ch}", '', $t);
 			}
+			
+			// news_show_in_category
+			if(isset($_SESSION['news_show_in_category']))
+			{	
+				if($_SESSION['news_show_in_category'] == 1)
+					$t = str_replace("{news_show_in_category_ch}", 'checked="checked"', $t);
+				else	  
+					$t = str_replace("{news_show_in_category_ch}", '', $t);
+			}
 		}
 		else
 		{
 			$t = str_replace("{news_fixed_ch}", '', $t);
-			$t = str_replace("{news_view_ch}", 'checked="checked"', $t);
 			$t = str_replace("{news_approve_ch}", 'checked="checked"', $t);
+			$t = str_replace("{news_show_in_category_ch}", '', $t);
 			
 		}
-		
 		
 	}// end if(userPriviliges::IsAdministrator())
 	else
@@ -300,16 +287,25 @@ class addnews
 	// возвращяет true или false в зависимости от того как прошла проверка
 	/////////////////////////////////////
 	function Check(&$message)
-	{	
-		// проверяем является ли пользователь администратором
-		$isadmin = 	userPriviliges::IsAdministrator();
-		
+	{			
 		// флаги добавления новости
-		$news_fixed = 0;		// зафиксирована
-		$news_approve = 0;		// разрешить новость
-		$news_view = 0;			// показывать новость на сайте		
+		$news_fixed = 0;				// зафиксирована
+		$news_approve = 0;				// разрешить новость
+		$news_show_in_category = 0;		// показывать новость в своей катагории		
 
-		if(!$isadmin)
+		if(userPriviliges::IsAdministrator())
+		{		
+			//FIXME: надо более тчательная проверка
+			if(isset($_POST['news_fixed']))
+				$news_fixed = $_POST['news_fixed'];
+
+			if(isset($_POST['news_approve']))
+				$news_approve = $_POST['news_approve'];
+				
+			if(isset($_POST['news_show_in_category']))
+				$news_show_in_category = $_POST['news_show_in_category'];
+		}
+		else
 		{
 			// если не администратор то должно быть определено число с картинки
 			$imagefrompic = "";
@@ -318,65 +314,56 @@ class addnews
 			else	
 				return false;
 
-			
-			
 			if($_SESSION['image_from_pic'] != $imagefrompic)
 			{
 				$message = lang_addnews_invalidpiccode;
 				return false;
-			}	
-		}
-		else
-		{
-			if(isset($_POST['news_fixed']))
-				$news_fixed = $_POST['news_fixed'];
-
-			if(isset($_POST['news_approve']))
-				$news_approve = $_POST['news_approve'];
-			
-			
-			if(isset($_POST['news_view']))
-				$news_view = $_POST['news_view'];
-			
+			}
 		}	
-
-			
+		
+		// имя новости
 		$news_name = "";
 		if(isset($_POST['news_name']))
 			$news_name = $_POST['news_name'];
 		else	
 			return false;
 		
+		// описание новости
 		$news_sh_description = "";
 		if(isset($_POST['news_sh_description']))
 			$news_sh_description = $_POST['news_sh_description'];
 		else	
 			return false;
 		
+		// полное описание новости
 		$news_showfull = "";
 		if(isset($_POST['news_showfull']))
 			$news_showfull = $_POST['news_showfull'];
 		else	
 			return false;	
-
+		
+		// ссылка на источник
 		$news_full_link = "";
 		if(isset($_POST['news_full_link']))
 			$news_full_link = $_POST['news_full_link'];
 		else	
 			return false;
 		
+		// ключевые слова
 		$news_keyword = "";
 		if(isset($_POST['news_keyword']))
 			$news_keyword = $_POST['news_keyword'];
 		else	
 			return false;
 		
+		// автор новости
 		$news_autor = "";
 		if(isset($_POST['news_autor']))
 			$news_autor = $_POST['news_autor'];
 		else	
 			return false;
 		
+		// категория новости
 		$news_category = 0;
 		if(isset($_POST['news_category']))
 			$news_category = $_POST['news_category'];
@@ -384,20 +371,22 @@ class addnews
 			return false;
 		
 		
-		
+		// проверка на максимальное количество символов в заголовке новости
 		if(strlen($news_name) > 250)
 		{
 			$message = lang_addnews_newsnameverylong;
 			return false;	
 		}	
 		
+		// проверка на максимальное количество символов в поле автор
 		if(strlen($news_autor) > 60)
 		{
 			$message = lang_addnews_newsautorverylong;
 			return false;	
 		}	
-		$t = time();
 		
+		
+		$t = time();
 		
 		// заменяем путь к сайту на шаблон
 		$news_sh_description = str_replace(SITE_PATH, '{sitepath}', $news_sh_description);
@@ -409,7 +398,6 @@ class addnews
 		$news_full_link = str_replace(FORUM_PATH, '{forum_path}', $news_full_link);		
 		$news_showfull = str_replace(FORUM_PATH, '{forum_path}', $news_showfull);		
 
-		
 		$news_full_or_link = 1;
 		// определяем какую ссылку использовать - на полную новость или на другой сайт
 		if((strlen($news_showfull) > 0) and (strlen($news_full_link) == 0))
@@ -418,23 +406,17 @@ class addnews
 			$news_full_or_link = 0;	
 
 		// запрос
-		
 		if(isset($_SESSION['edit_id']))
-		{
-			$q = "UPDATE ".DATABASE_TBLPERFIX."news SET news_name='".$news_name."', news_sh_description='".$news_sh_description."',news_autor='".$news_autor."', news_full_link='".$news_full_link."', news_date='".$t."', news_fixed = '".$news_fixed."', news_view='".$news_view."', news_approve='".$news_approve."',news_showfull='".$news_showfull."', news_full_or_link='".$news_full_or_link."', news_category='".$news_category."', news_keyword='".$news_keyword."' WHERE news_id='".$_SESSION['edit_id']."'";
-		}
+			$q = "UPDATE ".DATABASE_TBLPERFIX."news SET news_name='".$news_name."', news_sh_description='".$news_sh_description."',news_autor='".$news_autor."', news_full_link='".$news_full_link."', news_date='".$t."', news_fixed = '".$news_fixed."', news_show_in_category='".$news_show_in_category."', news_approve='".$news_approve."',news_showfull='".$news_showfull."', news_full_or_link='".$news_full_or_link."', news_category='".$news_category."', news_keyword='".$news_keyword."' WHERE news_id='".$_SESSION['edit_id']."'";
 		else
-		{
-			$q = "INSERT INTO ".DATABASE_TBLPERFIX."news (news_name, news_sh_description, news_autor, news_full_link, news_date, news_fixed, news_view, news_approve , news_showfull, news_full_or_link, news_category, news_keyword) VALUES ('".$news_name."', '".$news_sh_description."', '".$news_autor."', '".$news_full_link."', '".$t."', '".$news_fixed."', '".$news_view."', '".$news_approve."', '".$news_showfull."', '".$news_full_or_link."', '".$news_category."','".$news_keyword."')";		
-		}
+			$q = "INSERT INTO ".DATABASE_TBLPERFIX."news (news_name, news_sh_description, news_autor, news_full_link, news_date, news_fixed, news_show_in_category, news_approve , news_showfull, news_full_or_link, news_category, news_keyword) VALUES ('".$news_name."', '".$news_sh_description."', '".$news_autor."', '".$news_full_link."', '".$t."', '".$news_fixed."', '".$news_show_in_category."', '".$news_approve."', '".$news_showfull."', '".$news_full_or_link."', '".$news_category."','".$news_keyword."')";		
 		
-		
+		// выполнение запроса
 		AbstractDataBase::Instance()->query($q);	
 		
 		// если это редактирование новости то перегохим на страницу просмотра и редактирования новостей
 		if(isset($_SESSION['edit_id']))
 			$message = lang_addnews_edit;
-
 		else	
 			$message = lang_addnews_add;
 		
@@ -450,17 +432,17 @@ class addnews
 		unset($_POST['news_showfull']);		
 		unset($_POST['news_category']);
 		unset($_POST['news_keyword']);
-		
 
+		unset($_POST['news_fixed']);
+		unset($_POST['news_approve']);
+		unset($_POST['news_show_in_category']);
+		
 		return true;
-		
-		
 	}
 	
 	/////////////////////////////////////////////////////////
 	// вспомогательная функция - сбрасывает состояние сессионных переменных
-	////////////////////////////////////////////////////////
-	
+	////////////////////////////////////////////////////////	
 	function FlushSession()
 	{	
 		unset($_SESSION['edit_id']);
@@ -473,9 +455,8 @@ class addnews
 		unset($_SESSION['news_keyword']);			
 
 		unset($_SESSION['news_fixed']);
-		unset($_SESSION['news_view']);
 		unset($_SESSION['news_approve']);
-		
+		unset($_SESSION['news_show_in_category']);
 	}
 	
 	/////////////////////////////////////////////////////////
@@ -494,7 +475,6 @@ class addnews
 		$line = AbstractDataBase::Instance()->get_row($result);
 		
 		// устанавливаем переменные
-		
 		$_SESSION['edit_id'] = $id;
 		
 		$_SESSION['news_name'] = $line['news_name'];
@@ -507,12 +487,11 @@ class addnews
 
 		// флаги
 		$_SESSION['news_fixed'] = $line['news_fixed'];	
-		$_SESSION['news_view'] = $line['news_view'];			
-		$_SESSION['news_approve'] = $line['news_approve'];		
+		$_SESSION['news_approve'] = $line['news_approve'];
+		$_SESSION['news_show_in_category'] = $line['news_show_in_category'];					
 		
 		// редирект на страницу редактирования новости (она общяя как для админпанели , так и для обычного пользователя)	
 		echo '<meta http-equiv="Refresh" content="0;URL=../index.php?addnews" />';
-		
 	}
 					 	
 }

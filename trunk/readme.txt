@@ -8,4 +8,3 @@
 если возникнут вопросы задать их можно написав feedback сообщение по адресу 
 
 http://xzengine.ru/index.php?feedback
-или по ICQ 6714488
