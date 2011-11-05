@@ -7,7 +7,7 @@
 				Новость закреплена</label>
 				<input name="news_approve" type="checkbox" id="news_approve" value="1" {news_approve_ch} />
 				Новость разрешена
-				<input name="news_view" type="checkbox" id="news_view" value="1" {news_view_ch} />
+				<input name="news_show_in_category" type="checkbox" id="news_show_in_category" value="1" {news_show_in_category_ch} />
 				Спрятать-показать новость
 				
 				</label>

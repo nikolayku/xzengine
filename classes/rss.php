@@ -51,7 +51,7 @@ class RssGen
 		echo '<generator>xzengine</generator>'."\n";
 		
 		// генериркем тело RSS
-		$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_view = 1 ORDER BY news_id DESC  LIMIT '.RSS_NEWS );			
+		$result = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = 0 AND news_approve = 1 AND news_show_in_category = 0 ORDER BY news_id DESC  LIMIT '.RSS_NEWS );			
 		
 		while($line = AbstractDataBase::Instance()->get_row($result))
 		{	

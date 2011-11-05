@@ -57,7 +57,7 @@ CREATE TABLE `{tableperfix}news` (
   `news_full_link` text collate cp1251_bin NOT NULL,
   `news_date` double NOT NULL,
   `news_fixed` tinyint(1) NOT NULL,
-  `news_view` tinyint(1) NOT NULL,
+  `news_show_in_category` tinyint(1) NOT NULL,
   `news_approve` tinyint(1) NOT NULL,
   `news_id` int(11) NOT NULL auto_increment,
   `news_showfull` text collate cp1251_bin NOT NULL,

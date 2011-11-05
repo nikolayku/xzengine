@@ -1,6 +1,6 @@
 <?php
 //---------------------------------------------
-// config file created atFriday 02nd 2011f September 2011 11:25:39 PM
+// config file created atSaturday 05th 2011f November 2011 09:34:47 PM
 //---------------------------------------------
 
 // Состояние сайта 
@@ -31,7 +31,7 @@ define("GZIP_COMPRESSION","3"); 					// уровень компрессии
 // Настройки сайта
 
 define("SITE_PATH","http://localhost/xzengine/trunk"); 					// путь к сайту
-define("NEWSPERPAGE","15"); 					// количество новостей на странице
+define("NEWSPERPAGE","2"); 					// количество новостей на странице
 define("SITE_TITLE","xzengine - установка прошла успешно"); 					// заголовок сайта
 define("SITE_KEYWORDS","CMS, Движок сайта, Скачать движок сайта"); 					// ключевые слова
 define("SKIN","xzengine_ru"); 					// скин для сайта

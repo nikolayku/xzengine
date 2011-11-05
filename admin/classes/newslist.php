@@ -11,7 +11,6 @@ class listNews
 	/////////////////////////////////////
 	function getNews(&$main_page_template, $newsperpage = 30,$page=0)
 	{
-		
 		$outputstr = ""; // сюда сохранятся значния выхоной строки	
 		
 		if($page < 0)
@@ -19,7 +18,7 @@ class listNews
 			
 		$news_fixed = 1;
 		$news_approve = 0;
-		$news_view = 0;
+		$news_show_in_category = 0;
 		
 		if(isset($_GET['applyfilter']))
 		{
@@ -34,14 +33,15 @@ class listNews
 				$news_approve = 0;	
 			
 			
-			if($_POST['news_view'] == 1)
-				$news_view = 1;	
+			if($_POST['news_show_in_category'] == 1)
+				$news_show_in_category = 1;	
 			else
-				$news_view = 0;		
+				$news_show_in_category = 0;		
 
 		}		
 		
 		// добавляем форму фильтра 
+		//FIXME: убрать фильтр, добавить поиск по новости с ajax
 		$filter_form_code = 
 		'<form id="formfilter" name="formfilter" method="post" action="index.php?listnews&applyfilter">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -54,8 +54,8 @@ class listNews
 			  <input name="news_approve" type="checkbox" id="news_approve" value="1" '.(($news_approve == 1)?'checked="checked"':'').' />
 			  Провереные новости </label></td>
 			<td width="22%" valign="middle"><label>
-			  <input name="news_view" type="checkbox" id="news_view" value="1" '.(($news_view == 1)?'checked="checked"':'').' />
-			  Показанные новости</label></td>
+			  <input name="news_show_in_category" type="checkbox" id="news_show_in_category" value="1" '.(($news_show_in_category == 1)?'checked="checked"':'').' />
+			  В категории</label></td>
 			<td width="12%"><input type="submit" name="Submit" value="Применить" /></td>
 		  </tr>
 		</table>
@@ -63,51 +63,58 @@ class listNews
 		</form>';
 
 		$outputstr = $filter_form_code.$outputstr;
-
-		$template = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/news.tpl");
 		
+		// загружаем шаблон
+		$template = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/news.tpl");
 		
 		// получаем новости
 		$q = 'SELECT * FROM '.DATABASE_TBLPERFIX.'news ORDER BY news_id DESC LIMIT '.$newsperpage * $page.','.$newsperpage;
 		
 		// если определён фильтр
+		// FIXME: убрать эти фильтры !!!!!, заменить поиском по имени новости
 		if(isset($_GET['applyfilter']))
 		{	
-			//$q = 'SELECT * FROM '.DATABASE_TBLPERFIX.'news WHERE news_fixed = '.$news_fixed.' AND news_approve = '.$news_approve.' AND news_view = '.$news_view.' ORDER BY news_id DESC LIMIT '.$newsperpage.' OFFSET '.($newsperpage * $page);
 			$q = 'SELECT * FROM '.DATABASE_TBLPERFIX.'news ';
 			
 			$q_1 = (($news_fixed == 1)?'news_fixed = 1 ':'');			
 			$q_2 = (($news_approve == 1)?'news_approve = 1 ':'');			
-			$q_3 = (($news_view == 1)?'news_view = 1 ':'');			
+			$q_3 = (($news_show_in_category == 1)?'news_show_in_category = 1 ':'');			
 			
 			// расматриваем различные комбинации флагов
 			$flags = "";
 			
-			if($news_fixed && !$news_approve && !$news_view)			// выбран только флаг 	$news_fixed
+			if($news_fixed && !$news_approve && !$news_show_in_category)			// выбран только флаг 	$news_fixed
 				$flags = 'WHERE '.$q_1;
 			
-			if($news_fixed && $news_approve && !$news_view)			// выбран  флаг 	$news_fixed и $news_approve
+			if(!$news_fixed && $news_approve && !$news_show_in_category)			// выбран только флаг 	$news_approve
+				$flags = 'WHERE '.$q_2;
+			
+			if(!$news_fixed && !$news_approve && $news_show_in_category)			// выбран только флаг 	$news_show_in_category
+				$flags = 'WHERE '.$q_3;
+			
+			if($news_fixed && $news_approve && !$news_show_in_category)			// выбран  флаг 	$news_fixed и $news_approve
 				$flags = 'WHERE '.$q_1.'AND '.$q_2;
 			
-			if($news_fixed && !$news_approve && $news_view)			// выбран  флаг 	$news_fixed и $news_view
+			if($news_fixed && !$news_approve && $news_show_in_category)			// выбран  флаг 	$news_fixed и $news_show_in_category
 				$flags = 'WHERE '.$q_1.'AND '.$q_3;
 			
-			if(!$news_fixed && $news_approve && $news_view)			// выбран  флаг 	$news_approve и $news_view
+			if(!$news_fixed && $news_approve && $news_show_in_category)			// выбран  флаг 	$news_approve и $news_show_in_category
 				$flags = 'WHERE '.$q_2.'AND '.$q_3;
 			
-			if($news_fixed && $news_approve && $news_view)			// выбраны все флаги
-				$flags = '';		
+			if($news_fixed && $news_approve && $news_show_in_category)			// выбраны все флаги
+				$flags = 'WHERE '.$q_1.'AND'.$q_2.'AND'.$q_3;		
 			
-			if(!$news_fixed && !$news_approve && !$news_view)		// ничего не выбрано
-				$flags = 'WHERE news_fixed = 0 AND news_approve = 0 AND news_view = 0 ';	
+			if(!$news_fixed && !$news_approve && !$news_show_in_category)		// ничего не выбрано
+				$flags = 'WHERE news_fixed = 0 AND news_approve = 0 AND news_show_in_category = 0 ';	
+			
+			//print_r($_POST);
+			//echo "FLAGS".$flags;
 			
 			// соединяем с запросом
 			$q = $q.$flags.'ORDER BY news_id DESC LIMIT '.$newsperpage * $page.','.$newsperpage;	
 		}
 				
 		$result = AbstractDataBase::Instance()->query($q);
-		
-
 		if(!$result)
 			return "";
 
@@ -124,8 +131,6 @@ class listNews
 		$main_page_template = str_replace("{javascript_admin}", '<script src="./javascript/common.js" type="text/javascript" language="javascript"></script>', $main_page_template);		
 
 		return $outputstr;
-		
-			
 	}
 
 	////////////////////////////////
@@ -145,11 +150,7 @@ class listNews
 		
 		// {newsid} 
 		$template = str_replace("{newsid}", $row['news_id'], $template);
-
-
 	}
-	
 }
-
 
 ?>
