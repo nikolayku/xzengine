@@ -68,6 +68,9 @@ class Pages
 			$outputstr = $outputstr.$temp;
 		}
 		
+		//FIXME - временное решение, показывать ссылку на добавление статических страниц
+		$outputstr = '<a href="./index.php?staticpageedit">ƒобавить ещЄ одну</a><br><br>'.$outputstr;
+		
 		return $outputstr;	
 	}	
 	
