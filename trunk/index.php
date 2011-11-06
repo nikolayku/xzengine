@@ -90,9 +90,8 @@ if(isset($_GET['page']))
 
 
 // какую категорию выводить
-if(isset($_GET['category']))
+if(isset($_GET['category']) && is_numeric($_GET['category']))
 	$category = $_GET['category'];
-
 
 // выводим Rss если требуют
 if(isset($_GET['rss']))
@@ -214,8 +213,6 @@ if(isset($_GET['addnews']))  //добавляем новость
 		
 	//{pages}
 	$render_str = str_replace("{pages}", '', $render_str);
-
-
 }
 else
 {
@@ -237,7 +234,22 @@ else
 $render_str = str_replace("{title}", SITE_TITLE, $render_str);
 
 // {keywords} - заголовок страницы
-$render_str = str_replace("{keywords}", SITE_KEYWORDS, $render_str);
+$keywords = SITE_KEYWORDS;
+if($category != 0)
+{	
+	// показываем ключевые слова для категории
+	$q = 'SELECT * FROM '.DATABASE_TBLPERFIX.'category WHERE category_id='.$category.' LIMIT 1';	
+	$result = AbstractDataBase::Instance()->query($q );	
+	
+	if($result)
+	{
+		$newsfound = AbstractDataBase::Instance()->get_row($result);	
+		print_r($newsfound);
+		if($newsfound)
+			$keywords = $newsfound['category_descr'];
+	}
+}
+$render_str = str_replace("{keywords}", $keywords, $render_str);
 
 // {skin}
 // FIXME: подумать
