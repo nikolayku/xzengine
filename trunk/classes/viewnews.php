@@ -152,7 +152,6 @@ class viewnews
 		$template = str_replace("{newsdate}", date(DATEFORMAT, $timest), $template);
 		
 		// {newslink} 
-		
 		if($row['news_full_or_link'] == 1)	 
 		{	
 			if(SIMPLY_URL)	// вывод простой ссылки   
@@ -214,7 +213,6 @@ class viewnews
 		$right = file_get_contents("./skin/".SKIN."/templates/nextpage.tpl");;
 		
 		
-		
 		//{link} and {pagenum}  для левой ссылки
 		if(($page - 1) >=0)
 		{	
@@ -233,15 +231,12 @@ class viewnews
 		//{link} and {pagenum}  для правой ссылки
 		if(($page + 1) < $pages)
 		{	
-
 			if($category == 0)
 				$right = str_replace("{link}", SITE_PATH."/index.php?page=".($page + 1), $right);
 			else
 				$right = str_replace("{link}", SITE_PATH."/index.php?page=".($page + 1)."&category=".$category, $right);
 					
-		
 			$right = str_replace("{pagenum}", ($page + 1), $right);
-			
 		}
 		else
 			$right = "";	
