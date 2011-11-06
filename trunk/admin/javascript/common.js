@@ -17,7 +17,7 @@ var DeleteCategoryMessage = "”даление категории повлечЄт за собой удаление новос
 /////////////////////////////////////////
 function link_to_post(pid)
 {
-	temp = prompt( "—сылка дл€ копировани€", "{sitepath}/" + pid );
+	temp = prompt( "—сылка дл€ копировани€", "{sitepath}" + pid );
 	return false;
 }
 

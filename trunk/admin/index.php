@@ -115,7 +115,6 @@ if(userPriviliges::IsAdministrator())
 	else if(isset($_GET['dbtools']))
 	{	
 		// страница для работы с базой данных
-		
 		$message = '';
 		$databasetools = new dbtools();
 		
@@ -131,14 +130,11 @@ if(userPriviliges::IsAdministrator())
 	else if(isset($_GET['uploadfilelist']))
 	{	
 		// загружаем форму загрузки файлов
-		
 		$message = '';
 		$upfileorm = new UploadFile();		
 		// загрузка файлов
 		if($_GET['uploadfile'] == 'upload')
-		{
 			$message = $upfileorm->ParseUplodedFile();
-		}
 							
 		// удаление загруженного файла		
 		if(isset($_GET['deleteuploadfile']))
@@ -148,8 +144,7 @@ if(userPriviliges::IsAdministrator())
 	}		
 	else if(isset($_GET['staticpagedelete']))
 	{	
-		// удаление статической страницы
-		
+		// удаление статической страницы	
 		$spage = new Pages();
 		
 		// удаляем
@@ -208,7 +203,6 @@ if(userPriviliges::IsAdministrator())
 		{
 			$message = EngineSettings::SaveConfig('config.php');
 			echo '<meta http-equiv="Refresh" content="0;URL=index.php?config" />';		
-
 		}
 		
 		$render_str = str_replace("{sitecontent_admin}", EngineSettings::LoadSettingsFileAsTemplate($render_str, $message), $render_str);
@@ -227,8 +221,6 @@ if(userPriviliges::IsAdministrator())
 		$ad->FlushSession();
 	}
 	
-
-
 	// заменяем меню
 	// {menu_admin}
 	$menu = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/menu.tpl");
@@ -262,7 +254,7 @@ $render_str = str_replace("{sitepath_admin}", SITE_PATH, $render_str);
 //{forum_path_admin}	
 $render_str = str_replace("{forum_path_admin}", FORUM_PATH, $render_str);
 
-// {sitepath} - путь к сайту
+// {sitepath} путь к сайту
 $render_str = str_replace("{sitepath}", SITE_PATH, $render_str);
 
 // {debug_log_admin} - тег вывода сообщений об ошибках 
