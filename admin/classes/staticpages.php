@@ -25,11 +25,18 @@ class Pages
 		//{static_pagename}
 		$temp = str_replace("{static_pagename}", addslashes($line['static_pagename']), $temp);
 		
-		//{static_page_link}		
+		//{static_page_link}
+		//{static_page_link_copy} - служит для копирования ссылки с тегом
 		if(SIMPLY_URL)	// если включена поддержка понятной ссылки
-			$temp = str_replace("{static_page_link}", '/spage/'.$line['static_id'].'.htm', $temp);
+		{
+			$temp = str_replace("{static_page_link}", '{sitepath}/spage/'.$line['static_id'].'.htm', $temp);
+			$temp = str_replace("{static_page_link_copy}", '/spage/'.$line['static_id'].'.htm', $temp);
+		}
 		else // если отключена	
-			$temp = str_replace("{static_page_link}", '/index.php?spage='.$line['static_id'], $temp);
+		{
+			$temp = str_replace("{static_page_link}", '{sitepath}/index.php?spage='.$line['static_id'], $temp);
+			$temp = str_replace("{static_page_link_copy}", '/spage/'.$line['static_id'].'.htm', $temp);
+		}
 		
 		return $temp;		
 	}		
