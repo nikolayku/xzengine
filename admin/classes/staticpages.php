@@ -11,14 +11,9 @@ class Pages
 	function DeleteStaticPage($id)
 	{		
 		if((is_numeric($id)) && ($id >= 1))
-		{
 			$q = AbstractDataBase::Instance()->query('DELETE FROM '.DATABASE_TBLPERFIX.'static WHERE static_id="'.$id.'"');
-			
-		}	
-		
 	}
 		
-	
 	////////////////////////////////////////////////////////////////////
 	//  «амен€ет теги при сосзании списка страниц
 	////////////////////////////////////////////////////////////////////
@@ -30,7 +25,6 @@ class Pages
 		//{static_pagename}
 		$temp = str_replace("{static_pagename}", addslashes($line['static_pagename']), $temp);
 		
-
 		//{static_page_link}		
 		
 		if(SIMPLY_URL)	// если включена поддержка пон€тной ссылки
@@ -39,12 +33,9 @@ class Pages
 		else // если отключена	
 			$temp = str_replace("{static_page_link}", '{sitepath}/index.php?spage='.$line['static_id'], $temp);
 		
-		
-		return $temp;	
-		
+		return $temp;		
 	}		
 		
-
 	////////////////////////////////////////////////////////////////////
 	// ѕолучение списка всех статичеких страниц 
 	// $main_page_template - шаблон главной страницы
@@ -77,13 +68,9 @@ class Pages
 			$outputstr = $outputstr.$temp;
 		}
 		
-		return $outputstr;
-			
+		return $outputstr;	
 	}	
 	
-	
-				
-
 	////////////////////////////////////////////////////////////////////
 	// ƒобавление в базу данных
 	////////////////////////////////////////////////////////////////////
@@ -91,7 +78,7 @@ class Pages
 	{	
 		$static_pagename = $_POST['static_pagename'];
 		$static_text = $_POST['static_text'];
-		
+		$static_keywords = $_POST['static_keywords'];
 		
 		// замен€ем путь к сайту на шаблон
 		$static_text = str_replace(SITE_PATH, '{sitepath}', $static_text);
@@ -106,7 +93,6 @@ class Pages
 		$static_pagename = str_replace(FORUM_PATH, '{forum_path}', $static_pagename);
 		
 		
-	
 		// в $_SESSION['editstaticpageid'] содердитьс€ идентификатор измен€емого объекта
 		// если содержитьс€ то обновл€ем иначе добавл€ем
 		session_start();
@@ -114,13 +100,13 @@ class Pages
 		$message = '';		
 		if(isset($_SESSION['editstaticpageid']))
 		{	
-			$q = "UPDATE ".DATABASE_TBLPERFIX."static SET static_pagename='".$static_pagename."', static_text='".$static_text."' WHERE static_id='".$_SESSION['editstaticpageid']."'";
+			$q = "UPDATE ".DATABASE_TBLPERFIX."static SET static_pagename='".$static_pagename."', static_text='".$static_text."', static_keywords='".$static_keywords."' WHERE static_id='".$_SESSION['editstaticpageid']."'";
 			$message = 'Ќовость обновлена';
 			unset($_SESSION['editstaticpageid']);	
 		}
 		else
 		{
-			$q = "INSERT INTO ".DATABASE_TBLPERFIX."static (static_pagename, static_text) VALUES ('".$static_pagename."', '".$static_text."')";
+			$q = "INSERT INTO ".DATABASE_TBLPERFIX."static (static_pagename, static_text, static_keywords) VALUES ('".$static_pagename."', '".$static_text."', '".$static_keywords."')";
 			$message = '—татическа€ страница сформирована';
 		}
 
@@ -138,8 +124,9 @@ class Pages
 	{		
 		$static_pagename = "";
 		$static_text = "";		
-
-		// провер€ем правильно и введены данные
+		$static_keywords = "";
+		
+		// провер€ем правильно ли введены данные
 		if((is_numeric($id)) && ($id >= 1))
 		{
 			$q = AbstractDataBase::Instance()->query('SELECT * FROM '.DATABASE_TBLPERFIX.'static WHERE static_id = '.$id.' LIMIT 1');
@@ -151,6 +138,7 @@ class Pages
 				{
 					$static_pagename = $line['static_pagename'];	// заголовок страницы
 					$static_text = $line['static_text'];			// содержимое страницы
+					$static_keywords = $line['static_keywords'];	// ключевые слова
 					
 					// замен€ем путь к сайту на шаблон
 					$static_text = str_replace('{sitepath}', SITE_PATH, $static_text);
@@ -229,9 +217,12 @@ class Pages
 		//{static_pagename}
 		$render_str = str_replace("{static_pagename}", $static_pagename, $render_str);
 	
-		
 		//{static_text}
 		$render_str = str_replace("{static_text}", $static_text, $render_str);
+		
+		//{static_keywords}
+		$render_str = str_replace("{static_keywords}", $static_keywords, $render_str);
+		
 		
 		//{message}
 		$render_str = str_replace("{message}", $message, $render_str);		
@@ -240,9 +231,10 @@ class Pages
 	}
 
 	// замен€ет в шаблоне страницы теги  {title} и 
+	// $template - шаблон главной страницы
+	// $id - id статической страницы
 	function RenderPage($template, $id)
 	{	
-		
 		// здесь идЄт проверка на правльность ввода 
 		if((!is_numeric($id)) || ($id < 1))
 		{	
@@ -269,16 +261,18 @@ class Pages
 			return '';
 		}
 				
-
 		// загружаем шаблон
 		$staticpage = file_get_contents("./skin/".SKIN."/templates/staticpage.tpl");			
 		
 		// {pagecontent}
 		$staticpage = str_replace("{pagecontent}", $line['static_text'], $staticpage);
 		
-		
 		//{sitecontent}
 		$template = str_replace("{sitecontent}", $staticpage, $template);
+		
+		//{keywords} - замен€ем если только есть ключевые слова, иначе их установ€т в index.php
+		if(trim($line['static_keywords']) != "")
+			$template = str_replace("{keywords}", $line['static_keywords'], $template);
 		
 		// {title}
 		$template = str_replace("{title}", $line['static_pagename'], $template);
