@@ -1,3 +1,5 @@
-static_id#static_pagename#static_text
-inc#str#str
-##
+static_id#static_pagename#static_text#static_keywords
+inc#str#str#str
+###
+2#4#<p>static page 4 description</p>#   
+3#sfsf sdf sd sf#<p>sfsd sd sd sdf</p>#4444 423 234

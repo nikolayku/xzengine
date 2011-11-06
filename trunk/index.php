@@ -245,7 +245,7 @@ if($category != 0)
 	{
 		$newsfound = AbstractDataBase::Instance()->get_row($result);	
 		print_r($newsfound);
-		if($newsfound)
+		if($newsfound && (trim($newsfound['category_descr']) != ""))
 			$keywords = $newsfound['category_descr'];
 	}
 }
