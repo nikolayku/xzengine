@@ -2,6 +2,8 @@
 <table width="684" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="128" height="32" class="BorderBlank">&nbsp;</td>
+          <td width="48" align="left" valign="top"><a href="{sitepath}" target="_blank"><img src="{skin_admin}/images/site.png" title="Перейти на сайт" width="48" height="48" border="0"/></a></td>
+          <td width="15" class="BorderBlank">&nbsp;</td>
           <td width="48" align="left" valign="top"><a href="../index.php?addnews"><img src="{skin_admin}/images/addnews.png" title="Добавить новость" width="48" height="48" border="0"/></a></td>
           <td width="15" class="BorderBlank">&nbsp;</td>
 		  <td width="48" align="left" valign="top"><a href="./index.php?listnews"><img src="{skin_admin}/images/editnews.png" title="Редактировать новость" width="48" height="48" border="0"/></a></td>	
