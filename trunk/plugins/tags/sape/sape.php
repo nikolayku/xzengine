@@ -16,7 +16,7 @@ class plugin_sape
 	private static $sapeContent = null; 
 	
 	// конструктор - основное предназначение инициализировать 
-	// $path - путь к директории со скинами
+	// $path - путь к директории с текущим плагином
 	public function __construct($path)
 	{	
 		require_once($path.'/'.self::$configFile);
@@ -48,6 +48,18 @@ class plugin_sape
 	{	
 		$template = str_replace(self::$oneTag, self::$sapeClient->return_links(), $template);
 		$template = self::$sapeContent->replace_in_text_segment($template);
+	}
+	
+	// позвращ€ет описание плагина - нужно дл€ админпанели 
+	public function GetShortDescription()
+	{
+		return "установка кода системы купли продажи ссылок sape.ru";
+	}
+	
+	// функци€ настройки плагина из админпанели
+	public function Admin()
+	{
+		return "плагин не поддерживает настройки";
 	}
 }
 

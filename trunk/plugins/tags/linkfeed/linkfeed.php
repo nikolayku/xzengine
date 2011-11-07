@@ -15,7 +15,7 @@ class plugin_linkfeed
 	private static $linkfeedClient = null; 
 	
 	// конструктор - основное предназначение инициализировать 
-	// $path - путь к директории со скинами
+	// $path - путь к директории с текущим плагином
 	public function __construct($path)
 	{	
 		require_once($path.'/'.self::$configFile);
@@ -43,6 +43,18 @@ class plugin_linkfeed
 	public function ModifyTemplate(&$template)
 	{	
 		$template = str_replace(self::$oneTag, self::$linkfeedClient->return_links(), $template);
+	}
+	
+	// позвращяет описание плагина - нужно для админпанели 
+	public function GetShortDescription()
+	{
+		return "Плагин для системы linkfeed";
+	}
+	
+	// функция настройки плагина из админпанели
+	public function Admin()
+	{
+		return "плагин не поддерживает настройки";
 	}
 }
 

@@ -1,7 +1,7 @@
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////
 // part of xzengine 
-// copyright 2007-2008 xzengine
+// copyright 2007-2011 xzengine
 // autor Kulchicky Nikolay
 //////////////////////////////////////////////////////////////////////////////////////////////
 // менеджер плагинов
@@ -17,33 +17,37 @@ class PluginManager
 	// конструктор
 	// в случае создания нескольких объёктов	
 	/////////////////////////////	
-	private function __construct()
+	private function __construct($isAdminPanel)
 	{	
 		// сканируем директорию с плагинами
-		self::ScanTagsPluginsDirectory();
+		self::ScanTagsPluginsDirectory($isAdminPanel);
 	}
 	private function __clone() {}
    
 	/////////////////////////////	
 	// получение инстанс класса 
 	/////////////////////////////
-	public static function Instance()
+	public static function Instance($isAdminPanel = false)
 	{
 		if (self::$instance === null)
-				self::$instance = new PluginManager();
+				self::$instance = new PluginManager($isAdminPanel);
 		
 		return self::$instance;
 	}
 	
 	/////////////////////////////	
 	// получение инстанс класса 
+	// $isAdminPanel - true если инициализация идт через админпанель
 	/////////////////////////////
-	private function ScanTagsPluginsDirectory()
-	{
-		$tagPluginsDir = PLUGINS_DIR.'tags/';
+	private function ScanTagsPluginsDirectory($isAdminPanel)
+	{	
+		$tagPluginsDir = './plugins/tags/';
+		if($isAdminPanel == true)
+			$tagPluginsDir = '../plugins/tags/';
+		
 		$handle = opendir($tagPluginsDir); 
 		while (false !== ($file = readdir($handle)))
-		{
+		{	
 			if($file == '.' || $file == '..')
 				continue;
 			
@@ -57,7 +61,15 @@ class PluginManager
 			// следующяя конструкция может оказаться непонятной, но средства PHP,
 			// позволяют создавать новый класс из обычной строки.
 			$className = 'plugin_'.$file;
-			self::$tagPluginsList[] = new $className($tagPluginsDir.$file);			
+			
+			// описание плагина
+			$pluginInfo = array();
+			$pluginInfo['class'] = new $className($tagPluginsDir.$file);				// объект плагина
+			$pluginInfo['short'] = trim($pluginInfo['class']->GetShortDescription());	// описание плагина
+			$pluginInfo['name'] = $file;												// название плагина
+			
+			// добавление описания
+			self::$tagPluginsList[] = $pluginInfo;			
 
 		}
 		closedir($handle);
@@ -70,13 +82,75 @@ class PluginManager
 	{	
 		foreach(self::$tagPluginsList as $val)
 		{
-			if($val->isTagPresent($template))
-				$val->ModifyTemplate($template);	
+			if($val['class']->isTagPresent($template))
+				$val['class']->ModifyTemplate($template);	
 		}
 	}
-
 	
+	/////////////////////////////	
+	// возвращяет информацию о плагинах
+	/////////////////////////////
+	public function ViewPluginsList()
+	{	
+		// загружаем шаблон
+		$listTemplate = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/pluginslist.tpl");
+		$out = '';
+		
+		// цикл по всем зарегистрированным плагинам
+		foreach(self::$tagPluginsList as $val)
+		{
+			$temp = $listTemplate;
+			$temp = str_replace("{plugin_name}", $val['name'], $temp);
+			$temp = str_replace("{plugin_short_descr}", $val['short'], $temp);
+			
+			$out .= $temp;
+		}
+		
+		return $out;
+	}
+	
+	/////////////////////////////	
+	// возвращяет true, если плагин с таким именем присуствует, false в противном случае
+	// $template - шаблон главной страницы
+	/////////////////////////////
+	public function isPluginRegister($pluginName)
+	{	
+		if($pluginName == "")
+			return false;
+		
+		// проход по всем зарегистрированным плагинам
+		foreach(self::$tagPluginsList as $val)
+		{
+			if($val['name'] == $pluginName)
+				return true;
+		}
+		
+		return false;
+	}
+	
+	/////////////////////////////	
+	// настройки плагина
+	// $pluginName - имя плагина
+	// $renderTemplate - шаблон главной страницы админпанели
+	/////////////////////////////
+	public function runConfigurePlugin($pluginName, $renderTemplate)
+	{	
+		$out = "Плагин '".$pluginName."' не найден";
+		if($pluginName == "")
+			return $out;
+		
+		// проход по всем зарегистрированным плагинам
+		for($i = 0; i < count(self::$tagPluginsList); ++$i)
+		{
+			if(self::$tagPluginsList[$i]['name'] == $pluginName)
+			{
+				// запускаем настройки плагина
+				return self::$tagPluginsList[$i]['class']->Admin($renderTemplate);
+			}
+		}
+		
+		return $out;
+	}
 }
-
 
 ?>

@@ -1,9 +1,8 @@
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////
 // part of xzengine 
-// copyright 2007-2008 xzengine
+// copyright 2007-2011 xzengine
 // autor Kulchicky Nikolay
-// 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Встраивание на страницу кода adsence от google
 
@@ -13,7 +12,7 @@ class plugin_adsence
 	private $tagsArray = array();
 
 	// конструктор - основное предназначение инициализировать 
-	// $path - путь к директории со скинами
+	// $path - путь к директории с текущим плагином
 	public function __construct($path)
 	{
 		$dirToScan = $path.'/'.self::$pluginsDir.'/';
@@ -45,6 +44,18 @@ class plugin_adsence
 		{
 			$template = str_replace($val['tag'], $val['value'], $template);		
 		}	
+	}
+	
+	// позвращяет описание плагина - нужно для админпанели 
+	public function GetShortDescription()
+	{
+		return "установка adsence";
+	}
+	
+	// функция настройки плагина из админпанели
+	public function Admin()
+	{
+		return "плагин не поддерживает настройки";
 	}
 }
 
