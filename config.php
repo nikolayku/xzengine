@@ -1,13 +1,13 @@
 <?php
 //---------------------------------------------
-// config file created atSaturday 05th 2011f November 2011 09:34:47 PM
+// config file created atMonday 07th 2011f November 2011 09:46:47 AM
 //---------------------------------------------
 
 // Состояние сайта 
 
 define("OFF_SITE","0"); 					// Отключить сайт
 define("OFF_SITE_MESSAGE","Сайт временно отключён. Ведутся профилактические работы."); 					// Сообщение пользователям
-define("DEBUG_MODE","0"); 					// состояние debug режима
+define("DEBUG_MODE","1"); 					// состояние debug режима
 
 // работа с БД
 

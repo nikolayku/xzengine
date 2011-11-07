@@ -46,6 +46,18 @@ class plugin_counter
 			$template = str_replace($val['tag'], $val['value'], $template);		
 		}	
 	}
+	
+	// позвращяет описание плагина - нужно для админпанели 
+	public function GetShortDescription()
+	{
+		return "различные счётчики";
+	}
+	
+	// функция настройки плагина из админпанели
+	public function Admin()
+	{
+		return "плагин не поддерживает настройки";
+	}
 }
 
 ?>

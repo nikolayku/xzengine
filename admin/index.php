@@ -32,6 +32,7 @@ require_once './classes/dbtools.php';
 require_once '../classes/feedback.php';
 require_once './classes/category.php';
 require_once './classes/edittemplates.php';
+require_once '../modules/pluginmanager.php';
 require_once '../modules/textdb/txt-db-api.php';
 
 $render_str = file_get_contents("./skin/".ADMINPANEL_SKIN."/templates/index.tpl");		// шаблон
@@ -75,7 +76,6 @@ if(userPriviliges::IsAdministrator())
 	if(isset($_GET['edittemplates']))
 	{	
 		// редактирование шаблонов 
-		
 		$ed = new EditTemplates();
 		$render_str = str_replace("{sitecontent_admin}",$ed->LoadTemplate($render_str), $render_str);	
 
@@ -83,7 +83,6 @@ if(userPriviliges::IsAdministrator())
 	else if(isset($_GET['category']))
 	{	
 		// работа с категориями
-		
 		$message = '';
 		$nc = new Category();
 		
@@ -103,7 +102,6 @@ if(userPriviliges::IsAdministrator())
 	else if(isset($_GET['feedbacklist']))
 	{	
 		// выводим список feedback новостей	
-		
 		$message = '';
 		$fb = new FeedBack();	
 			
@@ -156,7 +154,6 @@ if(userPriviliges::IsAdministrator())
 	else if(isset($_GET['staticpagelist']))
 	{	
 		// показывание списка статических страниц	
-		
 		$spage = new Pages();	
 		$render_str = str_replace("{sitecontent_admin}", $spage->GetStaticPageList($render_str), $render_str);
 
@@ -164,7 +161,6 @@ if(userPriviliges::IsAdministrator())
 	else if(isset($_GET['staticpageadd']))
 	{	
 		// добавление статической страницы 
-		
 		$spage = new Pages();
 		$render_str = str_replace("{sitecontent_admin}", $spage->AddOrUpdate(), $render_str);
 	}		
@@ -192,7 +188,6 @@ if(userPriviliges::IsAdministrator())
 		$nl = new listNews(); 
 		
 		$render_str = str_replace("{sitecontent_admin}", $nl->getnews($render_str,ADMINPANEL_NEWSPERPAGE, $page), $render_str);
-
 	}
 	else if(isset($_GET['config']))
 	{	
@@ -207,17 +202,24 @@ if(userPriviliges::IsAdministrator())
 		
 		$render_str = str_replace("{sitecontent_admin}", EngineSettings::LoadSettingsFileAsTemplate($render_str, $message), $render_str);
 	}
+	else if(isset($_GET['plugins']))
+	{	
+		$currentPlugin = trim($_GET['plugins']);
+		if(PluginManager::Instance(true)->isPluginRegister($currentPlugin))
+			$render_str = str_replace("{sitecontent_admin}", PluginManager::Instance(true)->runConfigurePlugin($currentPlugin, $render_str), $render_str);
+		else
+			$render_str = str_replace("{sitecontent_admin}", PluginManager::Instance(true)->ViewPluginsList(), $render_str);
+	}
 	else if(isset($_GET['id']))
 	{
 		// редактирование новостей
-		
 		$ad = new addnews();
 		$ad->editNews($_GET['id']);
 	}
 	else
 	{
 		$ad = new addnews();	
-		// удаляем если есть сиссионные переменные 
+		// удаляем если есть сессионные переменные 
 		$ad->FlushSession();
 	}
 	
