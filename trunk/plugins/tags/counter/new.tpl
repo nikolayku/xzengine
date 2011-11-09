@@ -1,6 +1,6 @@
 <div align="center">				
 				<br/>
-				<div align="center">{message}</div><br/>
+				<div align="center"><b>{message}</b></div><br/>
 				<form id="feedbackform" name="feedbackform" method="post" action="{new}">
 					Имя счётчика
 					<br>
