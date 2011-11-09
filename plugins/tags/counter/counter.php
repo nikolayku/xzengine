@@ -50,10 +50,15 @@ class plugin_counter
 	// функция настройки плагина из админпанели
 	public function Admin()
 	{	
+		$message = "";
+		if($this->GetDirAttr('./'.$this->pathToPlugin.'/'.self::$pluginsDir) != '777')
+			$message = 'Невозможно сохранить настройки счётчиков. На папку '.self::$pluginsDir.' не установлены права записи';
+
 		if(isset($_GET['del']))
-			$this->deleteCounter($_GET['del']);
+			$message = $this->deleteCounter($_GET['del']).$message;
 		
-		$out = $this->formAddNew().$this->getList();
+				
+		$out = $this->formAddNew($message).$this->getList();
 		
 		return $out;
 	}
@@ -124,7 +129,16 @@ class plugin_counter
 	{
 		$newTemplate = file_get_contents($this->pathToPlugin.'/new.tpl');
 		
+		//{message}
+		$newTemplate = str_replace('{message}', $message, $newTemplate);
+		
 		return $newTemplate;
+	}
+	
+	// получает атрибуты директории
+	private function GetDirAttr($dir)
+	{
+		return (substr(sprintf('%o', @fileperms($dir)), -3));
 	}
 }
 
