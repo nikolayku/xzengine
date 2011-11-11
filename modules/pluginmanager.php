@@ -67,6 +67,12 @@ class PluginManager
 			$pluginInfo['class'] = new $className($tagPluginsDir.$file);				// объект плагина
 			$pluginInfo['short'] = trim($pluginInfo['class']->GetShortDescription());	// описание плагина
 			$pluginInfo['name'] = $file;												// название плагина
+			$pluginInfo['icon'] = '{skin_admin}/images/plugin.png';						// иконка
+			
+			// проверяем есть ли у плагина своя иконка
+			$iconFile = $tagPluginsDir.$file.'/icon.png'; 
+			if(is_file($iconFile))
+				$pluginInfo['icon'] = '{sitepath}/plugins/tags/'.$file.'/icon.png';
 			
 			// добавление описания
 			self::$tagPluginsList[] = $pluginInfo;			
@@ -100,6 +106,7 @@ class PluginManager
 		foreach(self::$tagPluginsList as $val)
 		{
 			$temp = $listTemplate;
+			$temp = str_replace("{plugin_icon}", $val['icon'], $temp);
 			$temp = str_replace("{plugin_name}", $val['name'], $temp);
 			$temp = str_replace("{plugin_short_descr}", $val['short'], $temp);
 			
