@@ -1,7 +1,7 @@
 <div align="center">				
 				<br/>
 				<div align="center"><b>{message}</b></div><br/>
-				<form id="feedbackform" name="feedbackform" method="post" action="{new}">
+				<form id="counter_new" name="counter_new" method="post" action="{new}">
 					Имя счётчика
 					<br>
               			<input name="counter_name" type="text" id="counter_name" size="40" />
