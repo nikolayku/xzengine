@@ -42,7 +42,7 @@ class plugin_counter
 		}	
 	}
 	
-	// позвращ€ет описание плагина - нужно дл€ админпанели 
+	// возвращ€ет описание плагина - нужно дл€ админпанели 
 	public function GetShortDescription()
 	{
 		return "—чЄтчики посещ€емости сайта(Liveinternet, Rambler...)";
@@ -52,7 +52,7 @@ class plugin_counter
 	public function Admin()
 	{	
 		$message = "";
-		if($this->GetDirAttr('./'.$this->pathToPlugin.'/'.self::$pluginsDir) != '777')
+		if($this->GetDirAttr($this->pathToPlugin.'/'.self::$pluginsDir) != '777')
 			$message = 'Ќевозможно сохранить настройки счЄтчиков. Ќа папку '.self::$pluginsDir.' не установлены права записи';
 
 		if(isset($_GET['del']))
@@ -63,6 +63,11 @@ class plugin_counter
 		
 				
 		$out = $this->formAddNew($message).$this->getList();
+		
+		// провер€ем наличие файла readme.txt
+		$readMeFile = $this->pathToPlugin.'/readme.txt';
+		if(isset($readMeFile))
+			$out .= file_get_contents($readMeFile);
 		
 		return $out;
 	}
