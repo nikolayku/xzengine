@@ -60,8 +60,11 @@ class plugin_customtag
 		if(isset($_GET['new']))
 			$message = $this->newTag().$message;
 		
+		$editName = false;
+		if(isset($_GET['edit']))
+			$editName = trim($_GET['edit']);
 				
-		$out = $this->formAddNew($message).$this->getList();
+		$out = $this->formAddNew($message, $editName).$this->getList();
 		
 		// проверяем наличие файла readme.txt
 		$readMeFile = $this->pathToPlugin.'/readme.txt';
@@ -105,6 +108,8 @@ class plugin_customtag
 			$deleteUrl = self::$pluginUrl.'&del='.$this->tagsArray[$i]['name'];
 			$temp = str_replace('{delete}', $deleteUrl, $temp);
 			
+			$editUrl = self::$pluginUrl.'&edit='.$this->tagsArray[$i]['name'];
+			$temp = str_replace('{edit}', $editUrl, $temp);
 			
 			$out .= $temp;
 		}
@@ -134,8 +139,22 @@ class plugin_customtag
 	}
 	
 	// добавление нового счётчика
-	private function formAddNew($message)
-	{
+	private function formAddNew($message, $editName)
+	{	
+		$editName = trim($editName);
+		$tagName = '';
+		$tagCode = '';
+		
+		if($editName !== false)
+		{
+			$fileName = $this->pathToPlugin.'/'.self::$pluginsDir.'/'.$editName.'.txt';
+			if(($code = file_get_contents($fileName)) !== false)
+			{
+				$tagName = $editName;
+				$tagCode = htmlspecialchars($code);
+			}
+		}
+		
 		$newTemplate = file_get_contents($this->pathToPlugin.'/new.tpl');
 		
 		//{message}
@@ -144,6 +163,12 @@ class plugin_customtag
 		// {new} ссылка для создания нового счётчика
 		$newUrl = self::$pluginUrl.'&new';
 		$newTemplate = str_replace('{new}', $newUrl, $newTemplate);
+		
+		// {tag_name}
+		$newTemplate = str_replace('{tag_name}', $tagName, $newTemplate);
+		
+		// {tag_code}
+		$newTemplate = str_replace('{tag_code}', $tagCode, $newTemplate);
 		
 		return $newTemplate;
 	}
@@ -163,6 +188,7 @@ class plugin_customtag
 			return 'Имя тега задано не корректно';
 		
 		$counterCode = trim($_POST['counter_code']);
+		$counterCode = stripslashes(htmlspecialchars_decode($counterCode));
 		
 		// сохраняем
 		$fileName = $this->pathToPlugin.'/'.self::$pluginsDir.'/'.$name.'.txt';
