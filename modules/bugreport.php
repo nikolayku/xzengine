@@ -5,6 +5,8 @@
 // autor Kulchicky Nikolay
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+//FIXME: в будущем этот код будет удалён и заменён на включене выключение сообщения об ошибках
+
 // пока не решенные проблемы с установлением статического члена класса как callback функции отчёта об ошибках , поэтому используем 
 // внешнюю функцию. из неё вызываем функцию-член синглтона обработки сообщений
 function ErrorCatchCallback($errno, $errstr, $errfile, $errline)
@@ -66,9 +68,20 @@ function ErrorCatchCallback($errno, $errstr, $errfile, $errline)
 			default:
 				return;
 		}		
-		$m_log .= $errorType.'--'.$errno.': "'.$errstr.'" in "'.$errfile.'" at line:'.$errline."\n";
+		
+		$errolLine = $errorType.'--'.$errno.': "'.$errstr.'" in "'.$errfile.'" at line:'.$errline."\n";
+		BugReport::Instance()->SetError($errolLine);
+		
 	}
-
+	
+	/////////////////////////////	
+	// отключает вывод ошибок и переобозначает вывод на себя 
+	/////////////////////////////	
+	private function SetError($error)	
+	{	
+		$this->m_log .= $error;
+	}
+	
 	/////////////////////////////	
 	// отключает вывод ошибок и переобозначает вывод на себя 
 	/////////////////////////////	
