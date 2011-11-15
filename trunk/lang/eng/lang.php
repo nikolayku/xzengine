@@ -27,6 +27,8 @@ define("show_news_not_found", 'Sorry required news is not found in our database 
 // for edit news
 define("news_edit", '<a href="{sitepath}/admin/index.php?id={newsid}">Edit</a>');
 
+// plugin load fail
+define("plugin_load_fail", 'Plugin load fail');
 
 
 

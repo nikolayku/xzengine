@@ -61,7 +61,6 @@ if(isset($_GET['login']))
 			userPriviliges::SetAdminCookies($login, $password, true);
 		else
 			userPriviliges::SetAdminCookies($login, $password, false);		
-		
 	}	
 }
 

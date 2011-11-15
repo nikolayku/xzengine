@@ -60,18 +60,11 @@ class EngineSettings
 		self::SaveParam($handle, 'SIMPLY_URL', $_POST['SIMPLY_URL'], '// выдавать ссылку в удобном виде или нет требует возможность записи в файл .htaccess');		
 		self::SaveParam($handle, 'USERS_CAN_ADD_NEWS', $_POST['USERS_CAN_ADD_NEWS'], '// Могут ли обычные пользователи добавлять новости');		
 					
-
 		fprintf($handle, "\n".'// админпанель'."\n\n");
 
 		self::SaveParam($handle, 'ADMINPANEL_SKIN', $_POST['ADMINPANEL_SKIN'], '// скин по умолчанию для админпанели');		
 		self::SaveParam($handle, 'ADMINPANEL_NEWSPERPAGE', $_POST['ADMINPANEL_NEWSPERPAGE'], '// количество новостей на странице редактирования');		
-		
-		fprintf($handle, "\n".'// Rss Настройки'."\n\n");
-		
-		self::SaveParam($handle, 'RSS_NEWS', $_POST['RSS_NEWS'], '// сколько будет выдаваться новостей');		
-		self::SaveParam($handle, 'RSS_DESCRIPTION', $_POST['RSS_DESCRIPTION'], '// описание ресурса');		
-		self::SaveParam($handle, 'RSS_LIVETIME', $_POST['RSS_LIVETIME'], '// время через которое следует обновлять содержимое Rss канала');		
-		
+			
 		fprintf($handle, "\n".'// загрузка файлов'."\n\n");
 		self::SaveParam($handle, 'UPLOADFILE_SIZE', $_POST['UPLOADFILE_SIZE'], '// максимальный размер файла загружаемого на сервер');		
 		self::SaveParam($handle, 'UPLOADFILE_DIRECTORY', $_POST['UPLOADFILE_DIRECTORY'], '// директория куда сохранять загруженные файлы');		
@@ -208,15 +201,6 @@ class EngineSettings
 		
 		//{ADMINPANEL_NEWSPERPAGE}
 		$render_str = str_replace('{ADMINPANEL_NEWSPERPAGE}', ADMINPANEL_NEWSPERPAGE, $render_str);
-		
-		//{RSS_NEWS}
-		$render_str = str_replace('{RSS_NEWS}', RSS_NEWS, $render_str);
-		
-		//{RSS_DESCRIPTION}
-		$render_str = str_replace('{RSS_DESCRIPTION}', RSS_DESCRIPTION, $render_str);
-		
-		//{RSS_LIVETIME}
-		$render_str = str_replace('{RSS_LIVETIME}', RSS_LIVETIME, $render_str);
 		
 		//{UPLOADFILE_SIZE}
 		$render_str = str_replace('{UPLOADFILE_SIZE}', UPLOADFILE_SIZE, $render_str);

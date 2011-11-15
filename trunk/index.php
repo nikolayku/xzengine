@@ -35,7 +35,7 @@ $VERSION_INFO	= 'beta 1';	// дополнительная информация
 
 // записываем в заголовок время последнего изменения страницы
 // FIXME: а надо ? поисковики любят когда страница не изменяется
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+//header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 
 require_once './modules/database.php';
 require_once './modules/errorpage.php';
@@ -44,7 +44,6 @@ require_once './classes/addnews.php';
 require_once './classes/admin.php';
 require_once './classes/viewfullnews.php';
 require_once './modules/gzip.php';
-require_once './classes/rss.php';
 require_once './classes/feedback.php';
 require_once './admin/classes/staticpages.php';
 require_once './modules/textdb/txt-db-api.php';
@@ -55,6 +54,8 @@ require_once './lang/'.SITE_LOC_FILE.'/lang.php';
 
 // создаём БД
 AbstractDataBase::Instance()->zero_number_of_queries(); // обнуляем количество запросов
+
+	
 
 // инициализируем plugin менеджер
 PluginManager::Instance();
@@ -78,30 +79,42 @@ else
 }
 
 
+//FIXME: сделать члены класов статическими
 $page_news =  new viewnews();
 $readmore = new showfullnews();
 
 $page = 0;
 $category = 0;				// категория (0 если главная)
 
+
+// плагины
+if(isset($_GET['plugin']))
+{	
+	$pluginName = trim($_GET['plugin']);
+	if(PluginManager::Instance(true)->isPluginRegister($pluginName))
+	{			
+		$render_str = str_replace("{sitecontent}", PluginManager::Instance(true)->runRenderPlugin($pluginName, $render_str), $render_str);
+		
+		// заменяем оставшиеся на странице теги
+		$render_str = str_replace("{pages}", '', $render_str);
+	}
+	else
+	{
+		// ошибка загрузки плагина
+		$render_str = str_replace("{sitecontent}", plugin_load_fail, $render_str);
+	}
+}
+
 // какую страницу выводить
 if(isset($_GET['page']))
 	$page = $_GET['page'];
-
 
 // какую категорию выводить
 if(isset($_GET['category']) && is_numeric($_GET['category']))
 	$category = $_GET['category'];
 
-// выводим Rss если требуют
-if(isset($_GET['rss']))
-{
-	$rss = new RssGen();
-	$rss->GenRss();
-	// выходим	
-	exit();
-}	
-
+// обработка теговых плагинов
+PluginManager::Instance()->ApplyTagPlugins($render_str);
 
 // форма обратной связи
 if(isset($_GET['feedback']))
@@ -116,7 +129,6 @@ if(isset($_GET['feedback']))
 	$render_str = str_replace("{sitecontent}", $fb->RenderFeedBackTemplate($render_str, $message), $render_str);	
 }
 
-
 // если определена ссылка на полное описание новости
 if(isset($_GET['readmore']))
 {
@@ -127,10 +139,7 @@ if(isset($_GET['readmore']))
 	
 	//{pages}
 	$render_str = str_replace("{pages}", "", $render_str);
-
-
 }
-
 
 // если определена ссылка на статическую новость
 if(isset($_GET['news']))
@@ -142,8 +151,6 @@ if(isset($_GET['news']))
 	
 	//{pages}
 	$render_str = str_replace("{pages}", "", $render_str);
-
-
 }
 
 // если определена статическая страница
@@ -159,9 +166,7 @@ if(isset($_GET['spage']))
 	
 	//{pages}
 	$render_str = str_replace("{pages}", "", $render_str);
-		
 }
-
 
 // обрабатываем основные теги
 
@@ -175,9 +180,7 @@ if(isset($_GET['addnews']))  //добавляем новость
 		$message = "";	
 
 		if($_GET['addnews'] == 'post')
-		{
 			$addn->Check($message);
-		}
 		
 		// показываем страницу
 		$templ = $addn->render($render_str, $message);
@@ -191,11 +194,8 @@ if(isset($_GET['addnews']))  //добавляем новость
 			$message = "";	
 
 			if($_GET['addnews'] == 'post')
-			{
 				$addn->Check($message);
-			}
 			
-
 			// показываем страницу
 			$templ = $addn->render($render_str, $message);
 			$render_str = str_replace("{sitecontent}", $templ, $render_str);
@@ -227,7 +227,6 @@ else
 	
 	//{pages}
 	$render_str = str_replace("{pages}", $page_news->GetPagesList($category), $render_str);
-
 }
 
 // {title} - заголовок страницы
@@ -292,8 +291,6 @@ if(DEBUG_MODE)
 	$render_str = str_replace("{debug_log}", BugReport::Instance()->Flush(), $render_str);
 else
 	$render_str = str_replace("{debug_log}", "", $render_str);
-
-PluginManager::Instance()->ApplyTagPlugins($render_str);
 
 
 $z = new GZip();

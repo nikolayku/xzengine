@@ -189,30 +189,6 @@
             </tr>
 			<tr>
               <td>&nbsp;</td>
-              <td class="NewDateStamp">Настройки Rss </td>
-              <td>&nbsp;</td>
-            </tr>
-			<tr>
-              <td height="28">&nbsp;</td>
-              <td>Количество новостей выдаваемой Rss</td>
-              <td>
-                <input name="RSS_NEWS" type="text" id="RSS_NEWS" value="{RSS_NEWS}" size="2" maxlength="2" />              </td>
-            </tr>
-			<tr>
-              <td height="28">&nbsp;</td>
-              <td>Описание ресурса </td>
-              <td>
-                <input name="RSS_DESCRIPTION" type="text" id="RSS_DESCRIPTION" value="{RSS_DESCRIPTION}" />              </td>
-            </tr>
-			<tr>
-              <td height="28">&nbsp;</td>
-              <td>Время(в минутах) через которое следует обновлять содержимое канала</td>
-              <td>
-                <input name="RSS_LIVETIME" type="text" id="RSS_LIVETIME" value="{RSS_LIVETIME}" />
-              </td>
-            </tr>
-			<tr>
-              <td>&nbsp;</td>
               <td class="NewDateStamp">Загрузка файлов</td>
               <td>&nbsp;</td>
             </tr>

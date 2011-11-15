@@ -48,7 +48,8 @@ class plugin_customtag
 	}
 	
 	// функция настройки плагина из админпанели
-	public function Admin()
+	// $adminPage - страница админпанели
+	public function Admin($adminPage)
 	{	
 		$message = "";
 		if($this->GetDirAttr($this->pathToPlugin.'/'.self::$pluginsDir) != '777')
@@ -73,6 +74,17 @@ class plugin_customtag
 		
 		return $out;
 	}
+	
+	// обработка страницы на сайте
+	// $mainpageTemplate - главная страницы
+	public function Render($mainpageTemplate)
+	{	
+		// если плагин не поддерживает рендеринг страницы то он должен вернуть 404 ошибку, это правильней с точки зрения безопасности
+		header("HTTP/1.0 404 Not Found");
+		exit();
+	}
+	
+	// ==================== дальше идут функции специфические для плагина =======================
 	
 	// сканирует директория с тегами
 	private function scanDirectoryWithTags()
