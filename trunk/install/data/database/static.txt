@@ -1,3 +1,0 @@
-static_id#static_pagename#static_text
-inc#str#str
-##
