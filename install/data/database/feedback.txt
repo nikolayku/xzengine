@@ -1,3 +1,0 @@
-feedback_from#feedback_message#feedback_id#feedback_read
-str#str#inc#int
-###

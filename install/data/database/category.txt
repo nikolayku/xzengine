@@ -1,5 +1,0 @@
-category_name#category_descr#category_id
-str#str#inc
-##
-
-Новости#Новости и последние события#1
