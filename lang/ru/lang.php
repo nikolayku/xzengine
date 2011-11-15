@@ -27,7 +27,8 @@ define("show_news_not_found", 'Запрашиваемоя вами новость не найдена в нашей баз
 // for edit news
 define("news_edit", '<a href="{sitepath}/admin/index.php?id={newsid}">Редактировать</a>');
 
-
+// plugin load fail
+define("plugin_load_fail", 'Ошибка, плагина с таким именем нет');
 
 
 

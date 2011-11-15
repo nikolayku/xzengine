@@ -158,6 +158,26 @@ class PluginManager
 		
 		return $out;
 	}
+	
+	/////////////////////////////	
+	// запуск плагина из сайта
+	// $pluginName - им€ плагина
+	// $renderTemplate - шаблон главной страницы админпанели
+	/////////////////////////////
+	public function runRenderPlugin($pluginName, $renderTemplate)
+	{	
+		// проход по всем зарегистрированным плагинам
+		for($i = 0; i < count(self::$tagPluginsList); ++$i)
+		{
+			if(self::$tagPluginsList[$i]['name'] == $pluginName)
+			{
+				// запускаем настройки плагина
+				return self::$tagPluginsList[$i]['class']->Render($renderTemplate);
+			}
+		}
+		
+		return "";
+	}
 }
 
 ?>
