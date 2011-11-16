@@ -55,8 +55,6 @@ require_once './lang/'.SITE_LOC_FILE.'/lang.php';
 // создаЄм Ѕƒ
 AbstractDataBase::Instance()->zero_number_of_queries(); // обнул€ем количество запросов
 
-	
-
 // инициализируем plugin менеджер
 PluginManager::Instance();
 
@@ -112,9 +110,6 @@ if(isset($_GET['page']))
 // какую категорию выводить
 if(isset($_GET['category']) && is_numeric($_GET['category']))
 	$category = $_GET['category'];
-
-// обработка теговых плагинов
-PluginManager::Instance()->ApplyTagPlugins($render_str);
 
 // форма обратной св€зи
 if(isset($_GET['feedback']))
@@ -249,6 +244,9 @@ if($category != 0)
 	}
 }
 $render_str = str_replace("{keywords}", $keywords, $render_str);
+
+// обработка теговых плагинов
+PluginManager::Instance()->ApplyTagPlugins($render_str);
 
 // {skin}
 // FIXME: подумать
