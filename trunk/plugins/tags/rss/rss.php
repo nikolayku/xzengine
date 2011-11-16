@@ -12,6 +12,7 @@ class plugin_rss
 	private static $pluginUrl = './index.php?plugins=rss';			// страница настроек плагина в админпанеле
 	private static $configFile = 'config.txt';						// файл с настройками
 	private static $configDir = '../temp/plugins/rss/';				// директория с настройками(относительно admin )
+	private static $configDirMain = './temp/plugins/rss/';				// директория с настройками(относительно главной страницы )
 	private $pathToPlugin;											// путь к директории плагина
 	
 	// конструктор - основное предназначение инициализировать 
@@ -58,11 +59,13 @@ class plugin_rss
 		{
 			if(self::SaveConfig() === false)
 				$message .= 'Ошибка сохранения конфигурационного файла';
+			else
+				$message .= 'Настройки сохранены';
 		}
 		
 		// загружаем конфиг файл
 		$msg = '';
-		$values = self::LoadConfig($msg);
+		$values = self::LoadConfig($msg, true);
 		$message .= $msg;
 		
 		return $this->LoadTemplate($values, $message);
@@ -75,7 +78,7 @@ class plugin_rss
 		// загружаем необходимые .php файлы
 		require_once($this->pathToPlugin.'/generate.php');
 		
-		$settings = self::LoadConfig();
+		$settings = self::LoadConfig($msg, false);
 		
 		// генерация rss
 		RssGen::GenRss($settings['rss_newscount'], $settings['rss_update'], $settings['rss_descr']);
@@ -86,7 +89,10 @@ class plugin_rss
 	
 	//========================================================================
 	
-	static private function LoadConfig(&$msg)
+	// Загружает конфиг
+	// $msg - возвращяет ошибку 
+	// $ifAdminPage - если true, то сейчас работа вёдется с админпанели, false значит основная страница сайта
+	static private function LoadConfig(&$msg, $ifAdminPage)
 	{	
 		// значения по умолчанию
 		$default = array();
@@ -95,6 +101,8 @@ class plugin_rss
 		$default['rss_update'] = 120;						// время обновления канала в минутах
 		
 		$configFile = self::$configDir . self::$configFile;
+		if($ifAdminPage === false)
+			$configFile = self::$configDirMain . self::$configFile;
 		
 		if(is_file($configFile) === false)
 		{	

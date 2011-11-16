@@ -1,1 +1,1 @@
-a:3:{s:13:"rss_newscount";s:2:"15";s:9:"rss_descr";s:15:"some rss chanel";s:10:"rss_update";s:3:"123";}
+a:3:{s:13:"rss_newscount";s:2:"15";s:9:"rss_descr";s:11:"hello world";s:10:"rss_update";s:3:"123";}

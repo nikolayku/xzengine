@@ -9,8 +9,8 @@
 
 class plugin_customtag
 {	
-	private static $pluginsDir = 'tags'; 	// директори€ где расположены настройки
-	private static $pluginName = 'customtag';		// им€ самого плагина
+	private static $pluginsDir = '../../../temp/plugins/customtag'; 	// директори€ где расположены настройки(относительно плагина)
+	private static $pluginName = 'customtag';							// им€ самого плагина
 	private static $pluginUrl = './index.php?plugins=customtag';
 	private $tagsArray = array();
 	private $pathToPlugin;		// путь к директории плагина
@@ -52,9 +52,13 @@ class plugin_customtag
 	public function Admin($adminPage)
 	{	
 		$message = "";
-		if($this->GetDirAttr($this->pathToPlugin.'/'.self::$pluginsDir) != '777')
-			$message = 'Ќевозможно сохранить настройки тегов. Ќа папку "'.self::$pluginsDir.'" не установлены права записи';
-
+		
+		if(is_dir($this->pathToPlugin.'/'.self::$pluginsDir) == false)
+		{
+			if(mkdir($this->pathToPlugin.'/'.self::$pluginsDir, 0777, true) === false)
+				$message .= 'Ќевозможно создать директорию дл€ сохранени€ настроек';
+		}
+		
 		if(isset($_GET['del']))
 			$message = $this->deleteTeg($_GET['del']).$message;
 		
