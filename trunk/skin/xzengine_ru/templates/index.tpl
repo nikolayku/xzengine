@@ -56,7 +56,7 @@
 	<!-- java script -->
 	{javascript}
 </head>
-<LINK rel="alternate" type="application/rss+xml" title="RSS" href="{sitepath}/index.php?rss">
+<LINK rel="alternate" type="application/rss+xml" title="RSS" href="{rss}">
 <body>
 <!-- Заголовок -->
 <div id="logo">
@@ -66,7 +66,7 @@
 <div id="menu">
 	<ul>
 		<li><a href="{sitepath}" title="На главную">Главная</a></li>
-		<li><a href="{sitepath}/index.php?rss" alt="Rss подписка" title="Подписка на RSS новости"><img src="{skin}/images/rss.png" width="16" height="16"> RSS</a></li>
+		<li><a href="{rss}" alt="Rss подписка" title="Подписка на RSS новости"><img src="{skin}/images/rss.png" width="16" height="16"> RSS</a></li>
 	
 	</ul>
 </div>
