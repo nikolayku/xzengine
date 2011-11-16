@@ -25,15 +25,18 @@ class plugin_rss
 	// возвращ€ет true если тэг или група тегов присуствует на странице
 	public function isTagPresent($template)
 	{	
-		//FIXME: исползовать тег {rss}
-		return false;
+		//FIXME: определ€ть действительно есть плагин на странице
+		return true;
 	}
 	
 	// делает нужные преобразовани€
 	public function ModifyTemplate(&$template)
 	{	
-		//FIXME: исползовать тег {rss}
-		return;
+		$url = '{sitepath}/index.php?plugin=rss';
+		if(SIMPLY_URL == 1)
+			$url = '{sitepath}/rss.xml';		// должно быть прописано в .htaccess
+		
+		$template = str_replace('{rss}', $url, $template);
 	}
 	
 	// возвращ€ет описание плагина - нужно дл€ админпанели 

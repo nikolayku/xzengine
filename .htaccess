@@ -8,7 +8,7 @@
 	RewriteRule ^spage/([0-9]+)\.htm$ index.php?spage=$1
 
 	# Rss
-	RewriteRule ^rss\.xml$ index.php?rss
+	RewriteRule ^rss\.xml$ index.php?plugin=rss
 
 	#sitemap plugin sitemap
 	RewriteRule ^sitemap.xml$ ./plugins/sitemap/index.php
