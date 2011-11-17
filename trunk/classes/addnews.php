@@ -6,7 +6,7 @@ class addnews
 	// конструктор
 	function __construct()
 	{	
-		session_start();
+		@session_start();
 	}
 		
 	// удаляет новость из бд

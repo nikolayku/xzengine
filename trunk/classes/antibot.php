@@ -61,7 +61,7 @@ class genrandomimage
 }
 
 // сохраняем в сессии 
-session_start();
+@session_start();
 
 $im = new genrandomimage ();
 $im->genstring();

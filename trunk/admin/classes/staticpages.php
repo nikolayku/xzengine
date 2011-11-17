@@ -103,7 +103,7 @@ class Pages
 		
 		// в $_SESSION['editstaticpageid'] содердиться идентификатор изменяемого объекта
 		// если содержиться то обновляем иначе добавляем
-		session_start();
+		@session_start();
 		$q = '';
 		$message = '';		
 		if(isset($_SESSION['editstaticpageid']))
