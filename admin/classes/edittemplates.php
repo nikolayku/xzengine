@@ -102,7 +102,7 @@ class EditTemplates
 	//////////////////////////////////////////
 	function ParseInputParams(&$curentTemplate, &$currentFile)
 	{
-		session_start();
+		@session_start();
 		
 		// через POST могут быть переданны переменные 
 		$curentTemplate = SKIN;

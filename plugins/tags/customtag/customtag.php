@@ -53,11 +53,6 @@ class plugin_customtag
 	{	
 		$message = "";
 		
-		if(is_dir($this->pathToPlugin.'/'.self::$pluginsDir) == false)
-		{
-			if(mkdir($this->pathToPlugin.'/'.self::$pluginsDir, 0777, true) === false)
-				$message .= 'Невозможно создать директорию для сохранения настроек';
-		}
 		
 		if(isset($_GET['del']))
 			$message = $this->deleteTeg($_GET['del']).$message;
@@ -93,7 +88,14 @@ class plugin_customtag
 	// сканирует директория с тегами
 	private function scanDirectoryWithTags()
 	{	
+		
 		$this->tagsArray = array();
+		
+		if(is_dir($this->pathToPlugin.'/'.self::$pluginsDir) == false)
+		{
+			if(mkdir($this->pathToPlugin.'/'.self::$pluginsDir, 0777, true) === false)
+				return;
+		}
 		
 		$dirToScan = $this->pathToPlugin.'/'.self::$pluginsDir.'/';
 		$handle = opendir($dirToScan);

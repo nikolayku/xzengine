@@ -10,7 +10,7 @@ class userPriviliges
 	// если они совпадают с правльными то тогда это администратор иначе гость
 	static function IsAdministrator()
 	{	
-		session_start();
+		@session_start();
 		
 		if(isset($_SESSION['login']) and isset($_SESSION['md5pass']))
 		{				

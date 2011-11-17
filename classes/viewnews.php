@@ -257,7 +257,9 @@ class viewnews
 	function GetPagesList($category = 0)
 	{	
 		// текущ€€ страница
-		$cstart = intval($_GET['page']);
+		$cstart = 0;
+		if(isset($_GET['page']))
+			$cstart = intval($_GET['page']);
 		
 		// получаем общее количество новостей
 		if($category == 0)
