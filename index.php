@@ -272,6 +272,9 @@ $JavaScript =
 '<script src="{sitepath}/javascript/common.js" type="text/javascript" language="javascript"></script>';
 $render_str = str_replace("{javascript}", $JavaScript, $render_str);
 
+//{style} - стили
+$render_str = str_replace("{style}", "", $render_str);
+
 // {sitepath} - путь к сайту
 $render_str = str_replace("{sitepath}", SITE_PATH, $render_str);
 
@@ -283,6 +286,7 @@ $page_gen_time = microtime(1) - $time_start;
 
 //{page_gen_time} - время генерации страницы	
 $render_str = str_replace("{page_gen_time}", substr($page_gen_time,0, 5), $render_str);
+
 
 // {debug_log} - тег вывода сообщений об ошибках 
 //if(DEBUG_MODE)
