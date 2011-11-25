@@ -55,6 +55,8 @@
 	</style>
 	<!-- java script -->
 	{javascript}
+	<!-- css styles -->
+	{style}
 </head>
 <LINK rel="alternate" type="application/rss+xml" title="RSS" href="{rss}">
 <body>
@@ -96,13 +98,17 @@
 						<li><a href="http://xzengine.ru">Официальный сайт</a></li>
 						{adminpanellink}&nbsp;
 					</ul>
-					<h2>Если понравился блог</h2>
+					<h2>Если понравился сайт</h2>
 					<ul>
 						<li><a title="Добавить в избранное" href="" onclick="bookmark('{title}', '{sitepath}')">Добавить в избранное</a></li>
 						<li><a title="Сделать стартовой" href="" onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('{sitepath}');return false;">Сделать стартовой</a></li>
 						<li><a title="Обратная связь" href="{sitepath}/index.php?feedback" >Форма обратной связи</a></li>
 						<li><a title="Rss 2.0" href="{sitepath}/index.php?rss" >RSS 2.0</a></li>
 
+					</ul>
+					<h2>Прайс лист</h2>
+					<ul>
+						<li>{price_list}</li>
 					</ul>
 				</li>
 			</ul>

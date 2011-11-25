@@ -88,7 +88,6 @@ class plugin_customtag
 	// сканирует директория с тегами
 	private function scanDirectoryWithTags()
 	{	
-		
 		$this->tagsArray = array();
 		
 		if(is_dir($this->pathToPlugin.'/'.self::$pluginsDir) == false)

@@ -1,0 +1,35 @@
+   .price_plugin_div1 { 
+    width: 90%; 
+    height: 100%;
+	background: #ebebeb; 
+    padding: 2px; 
+    border: solid 1px black; 
+    position: absolute; 
+    top: 1%; 
+    left: 5%;
+   }
+   
+   .price_plugin_div1 img{
+	border: none;
+   }
+   
+   .price_plugin_div2 { 
+    width: 100%; 
+    height: 26px;
+	background: #ccc;
+    padding: 0px;
+	text-align: right;
+   }
+		   
+   .price_plugin_table { 
+    border: 0px; 
+    padding: 0px;
+	text-align: center;
+   }
+   
+   /*images in table*/
+   .price_plugin_table img{
+	width: 48px; 
+    height: 48px;
+	border: none;
+   }
