@@ -172,7 +172,7 @@ class plugin_price
 	// возвращ€ет true, если тип файла поддерживаетс€ плагином
 	static private function isValidExtension($path)
 	{
-		if(self::isArchive($ext) === true)
+		if(self::isArchive($path) === true)
 			return true;
 		
 		if(self::getPriceFileType($path, $temp) === true)
