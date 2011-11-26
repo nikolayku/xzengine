@@ -1,21 +1,14 @@
 <div align="center">				
 				<br/>
 				<div align="center"><b>{message}</b></div><br/>
-				<!-- <form id="counter_new" name="counter_new" method="post" action="{new}">
-					Имя тега
-					<br>
-              			<input name="counter_name" type="text" id="counter_name" size="40" value="{tag_name}" />
-					<br>
-					<br>
-					Текст тега(к примеру код счётчика, код adsence и т.д.)
-					<br>
-					<textarea name="counter_code" cols="40" rows="5" id="counter_code">{tag_code}</textarea>
-					<br>
-					<br>
-					
-					<input type="submit" name="Submit" value="Создать" />
+				<div align="center">Последний прайс был загружен: {price_time}</div><br/>
+				<form method="post" enctype="multipart/form-data" name="uploadfile" id="uploadfile" action="{new}">
+					<input type="hidden" name="MAX_FILE_SIZE" value="{maxfilesize}"> 
+					Путь к файлу(можно загружать файлы размером {maxfilesize_str})<br>
+					<input name="uploadfilename" type="file" id="uploadfilename" size="40" /> 
+					<input name="StartUpload" type="submit" id="StartUpload" value="Загрузить прайслист" />
 
-				</form> -->	
+				</form>
 </div>
 <br/>
 <br/>
