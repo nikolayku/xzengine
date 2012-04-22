@@ -3,7 +3,10 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	#RewriteBase /
-
+	
+	#запрет показа содержимого папок
+	Options -Indexes
+	
 	# статические страницы
 	RewriteRule ^spage/([0-9]+)\.htm$ index.php?spage=$1
 
