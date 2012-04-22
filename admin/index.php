@@ -7,16 +7,7 @@
 define("API_HOME_DIR" ,"../modules/textdb/");
 define("DB_DIR" ,"./backup/");
 
-////////////////////////////////////////////////////////
-// включаем перехват errors
-require_once '../modules/bugreport.php';
 require_once '../config.php';
-if(DEBUG_MODE)
-	BugReport::Instance()->EnableErrorsLog();
-else
-	error_reporting(0);
-////////////////////////////////////////////////////////
-
 require_once '../modules/database.php';
 require_once '../modules/errorpage.php';
 require_once '../classes/viewnews.php';
@@ -257,12 +248,6 @@ $render_str = str_replace("{forum_path_admin}", FORUM_PATH, $render_str);
 
 // {sitepath} путь к сайту
 $render_str = str_replace("{sitepath}", SITE_PATH, $render_str);
-
-// {debug_log_admin} - тег вывода сообщений об ошибках 
-if(DEBUG_MODE)
-	$render_str = str_replace("{debug_log_admin}", BugReport::Instance()->Flush(), $render_str);
-else
-	$render_str = str_replace("{debug_log_admin}", "", $render_str);
 
 
 // выводим 

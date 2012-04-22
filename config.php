@@ -1,13 +1,12 @@
 <?php
 //---------------------------------------------
-// config file created atMonday 07th 2011f November 2011 09:46:47 AM
+// config file created atSunday 22nd 2012f April 2012 11:42:55 PM
 //---------------------------------------------
 
 // Состояние сайта 
 
 define("OFF_SITE","0"); 					// Отключить сайт
 define("OFF_SITE_MESSAGE","Сайт временно отключён. Ведутся профилактические работы."); 					// Сообщение пользователям
-define("DEBUG_MODE","1"); 					// состояние debug режима
 
 // работа с БД
 
@@ -25,7 +24,7 @@ define("ADMINPANEL_LOC_FILE","eng"); 					// путь к файлу локализаций для админп
 
 // поддержка GZip
 
-define("GZIP_ENABLED","0"); 					// поддержка gzip
+define("GZIP_ENABLED","1"); 					// поддержка gzip
 define("GZIP_COMPRESSION","3"); 					// уровень компрессии
 
 // Настройки сайта
@@ -34,7 +33,7 @@ define("SITE_PATH","http://localhost/xzengine/trunk"); 					// путь к сайту
 define("NEWSPERPAGE","2"); 					// количество новостей на странице
 define("SITE_TITLE","xzengine - установка прошла успешно"); 					// заголовок сайта
 define("SITE_KEYWORDS","CMS, Движок сайта, Скачать движок сайта"); 					// ключевые слова
-define("SKIN","xzengine_ru"); 					// скин для сайта
+define("SKIN","buxdozor_ru"); 					// скин для сайта
 define("DATEFORMAT","F jS, Y"); 					// формат даты
 define("SIMPLY_URL","0"); 					// выдавать ссылку в удобном виде или нет требует возможность записи в файл .htaccess
 define("USERS_CAN_ADD_NEWS","1"); 					// Могут ли обычные пользователи добавлять новости
