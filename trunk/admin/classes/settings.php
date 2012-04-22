@@ -28,7 +28,6 @@ class EngineSettings
 		fprintf($handle, "\n".'// Состояние сайта '."\n\n");
 		self::SaveParam($handle, 'OFF_SITE', $_POST['OFF_SITE'], '// Отключить сайт');
 		self::SaveParam($handle, 'OFF_SITE_MESSAGE', $_POST['OFF_SITE_MESSAGE'], '// Сообщение пользователям');
-		self::SaveParam($handle, 'DEBUG_MODE', $_POST['DEBUG_MODE'], '// состояние debug режима');
 		
 		fprintf($handle, "\n".'// работа с БД'."\n\n");
 		
@@ -118,15 +117,7 @@ class EngineSettings
 		else	
 			$str = '<option value="0">No</option><option value="1">Yes</option>'; 
 		$render_str = str_replace('{OFF_SITE}', $str, $render_str);	
-		
-		//{DEBUG_MODE}
-		$str = "";	
-		if(DEBUG_MODE)
-			$str = '<option value="1">Yes</option><option value="0">No</option>';
-		else	
-			$str = '<option value="0">No</option><option value="1">Yes</option>'; 
-		$render_str = str_replace('{DEBUG_MODE}', $str, $render_str);		
-	
+			
 		//{DATABASE_HOST} 
 		$render_str = str_replace('{DATABASE_HOST}', DATABASE_HOST, $render_str);
 			

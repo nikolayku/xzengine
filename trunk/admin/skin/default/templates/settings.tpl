@@ -24,14 +24,6 @@
               <td>
                 <input name="OFF_SITE_MESSAGE" type="text" id="OFF_SITE_MESSAGE" value="{OFF_SITE_MESSAGE}" />              </td>
             </tr>
-             <tr>
-              <td>&nbsp;</td>
-              <td>¬ключить debug режим</td>
-              <td>
-                <select name="DEBUG_MODE" id="DEBUG_MODE">
-                 {DEBUG_MODE}
-                </select>              </td>
-            </tr>
 		</tr>
 			<tr>
               <td>&nbsp;</td>

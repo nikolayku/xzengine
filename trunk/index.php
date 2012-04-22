@@ -13,15 +13,8 @@ if(filesize("./config.php") == 0)
 	exit();
 }
 
-////////////////////////////////////////////////////////
-// включаем перехват errors
-//require_once './modules/bugreport.php';
+
 require_once './config.php';
-//if(DEBUG_MODE)
-//	BugReport::Instance()->EnableErrorsLog();
-//else
-//	error_reporting(0);
-////////////////////////////////////////////////////////
 
 
 // запоминаем время
@@ -286,13 +279,6 @@ $page_gen_time = microtime(1) - $time_start;
 
 //{page_gen_time} - время генерации страницы	
 $render_str = str_replace("{page_gen_time}", substr($page_gen_time,0, 5), $render_str);
-
-
-// {debug_log} - тег вывода сообщений об ошибках 
-//if(DEBUG_MODE)
-//	$render_str = str_replace("{debug_log}", BugReport::Instance()->Flush(), $render_str);
-//else
-//	$render_str = str_replace("{debug_log}", "", $render_str);
 
 
 $z = new GZip();
