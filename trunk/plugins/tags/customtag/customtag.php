@@ -53,7 +53,6 @@ class plugin_customtag
 	{	
 		$message = "";
 		
-		
 		if(isset($_GET['del']))
 			$message = $this->deleteTeg($_GET['del']).$message;
 		
@@ -162,7 +161,7 @@ class plugin_customtag
 		$tagName = '';
 		$tagCode = '';
 		
-		if($editName !== false)
+		if($editName != "")
 		{
 			$fileName = $this->pathToPlugin.'/'.self::$pluginsDir.'/'.$editName.'.txt';
 			if(($code = file_get_contents($fileName)) !== false)
