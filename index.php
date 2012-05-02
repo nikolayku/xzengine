@@ -97,13 +97,15 @@ if(isset($_GET['plugin']))
 }
 
 // какую страницу выводить
-if(isset($_GET['page']))
+if(isset($_GET['page']) && is_numeric($_GET['page']))
 	$page = $_GET['page'];
+
 
 // какую категорию выводить
 if(isset($_GET['category']) && is_numeric($_GET['category']))
 	$category = $_GET['category'];
 
+	
 // форма обратной связи
 if(isset($_GET['feedback']))
 {
@@ -114,7 +116,7 @@ if(isset($_GET['feedback']))
 	if($_GET['feedback'] == 'send')
 		$message = $fb->SendFeedBack();	
 	
-	$render_str = str_replace("{sitecontent}", $fb->RenderFeedBackTemplate($render_str, $message), $render_str);	
+	$render_str = str_replace("{sitecontent}", $fb->RenderFeedBackTemplate($render_str, $message), $render_str);
 }
 
 // если определена ссылка на полное описание новости
@@ -231,7 +233,7 @@ if($category != 0)
 	if($result)
 	{
 		$newsfound = AbstractDataBase::Instance()->get_row($result);	
-		print_r($newsfound);
+		//print_r($newsfound);
 		if($newsfound && (trim($newsfound['category_descr']) != ""))
 			$keywords = $newsfound['category_descr'];
 	}
@@ -240,6 +242,21 @@ $render_str = str_replace("{keywords}", $keywords, $render_str);
 
 // обработка теговых плагинов
 PluginManager::Instance()->ApplyTagPlugins($render_str);
+
+// {on_main}...{/on_main}
+// показывает текст между {on_main} {/on_main} на главной, на других страницах заменяет текст на пустое место   
+if(($category == 0) && (count($_GET) == 0))
+{	
+	// просто убираем теги
+	$render_str = str_replace('{on_main}', '', $render_str);
+	$render_str = str_replace('{/on_main}', '', $render_str);
+}
+else
+{	
+	// убираем весь текст и теги
+	$regexpr = '/(\{on_main\}[\s\S]+?\{\/on_main\})/i';
+	$render_str = preg_replace($regexpr, '', $render_str);
+}
 
 // {skin}
 // FIXME: подумать
@@ -281,12 +298,14 @@ $page_gen_time = microtime(1) - $time_start;
 $render_str = str_replace("{page_gen_time}", substr($page_gen_time,0, 5), $render_str);
 
 
+//FIXME: перенести в статические члены
 $z = new GZip();
 
 ob_start();
 ob_implicit_flush(0); 
 
 
+// вывод отрендеренной страницы
 echo $render_str;
 
 // zip output 
