@@ -77,7 +77,7 @@ class systemInfo
 	function GetMysqlVersion(&$template)
 	{
 		
-		$template = str_replace("{mysqlversion}", mysql_get_server_info(), $template);
+		$template = str_replace("{mysqlversion}", @mysql_get_server_info(), $template);
 		
 	}
 
