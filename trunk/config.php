@@ -1,6 +1,6 @@
 <?php
 //---------------------------------------------
-// config file created atSunday 22nd 2012f April 2012 11:42:55 PM
+// config file created atWednesday 18th 2012f July 2012 12:44:02 PM
 //---------------------------------------------
 
 // Состояние сайта 
@@ -33,9 +33,9 @@ define("SITE_PATH","http://localhost/xzengine/trunk"); 					// путь к сайту
 define("NEWSPERPAGE","2"); 					// количество новостей на странице
 define("SITE_TITLE","xzengine - установка прошла успешно"); 					// заголовок сайта
 define("SITE_KEYWORDS","CMS, Движок сайта, Скачать движок сайта"); 					// ключевые слова
-define("SKIN","buxdozor_ru"); 					// скин для сайта
+define("SKIN","xzengine_ru"); 					// скин для сайта
 define("DATEFORMAT","F jS, Y"); 					// формат даты
-define("SIMPLY_URL","0"); 					// выдавать ссылку в удобном виде или нет требует возможность записи в файл .htaccess
+define("SIMPLY_URL","1"); 					// выдавать ссылку в удобном виде или нет требует возможность записи в файл .htaccess
 define("USERS_CAN_ADD_NEWS","1"); 					// Могут ли обычные пользователи добавлять новости
 
 // админпанель

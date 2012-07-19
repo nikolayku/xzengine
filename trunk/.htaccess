@@ -10,9 +10,6 @@
 	# статические страницы
 	RewriteRule ^spage/([0-9]+)\.htm$ index.php?spage=$1
 
-	# Rss
-	RewriteRule ^rss\.xml$ index.php?plugin=rss
-
 	#sitemap plugin sitemap
 	RewriteRule ^sitemap.xml$ ./plugins/sitemap/index.php
 
@@ -24,6 +21,14 @@
 	RewriteRule ^news/([0-9]+)\.html$ index.php?news=$1
 	RewriteRule ^readmore/([0-9]+)\.htm$ index.php?readmore=$1
 	RewriteRule ^readmore/([0-9]+)\.html$ index.php?readmore=$1
+	
+	
+	#настройки плагинов 
+	#для плагина favincon
+	RewriteRule favicon.ico index.php?plugin=favicon
+	# для плагина Rss
+	RewriteRule ^rss\.xml$ index.php?plugin=rss	
+	
 </IfModule>
 
 #?>
