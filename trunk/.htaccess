@@ -27,9 +27,6 @@
 	RewriteRule favicon.ico index.php?plugin=favicon
 	# для плагина Rss
 	RewriteRule ^rss\.xml$ index.php?plugin=rss
-		
-	#sitemap plugin sitemap
-	#RewriteRule ^sitemap.xml$ ./plugins/sitemap/index.php
 	
 </IfModule>
 
