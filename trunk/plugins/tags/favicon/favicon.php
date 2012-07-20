@@ -10,9 +10,9 @@ class plugin_favicon
 {	
 	private static $pluginName = 'favicon';									// им€ самого плагина
 	private static $pluginUrl = './index.php?plugins=favicon';				// страница настроек плагина в админпанеле
-	private static $configFile = 'favicon.ico';								// текущий favicon
-	private static $configDir = '../temp/plugins/favicon/';					// директори€ с настройками(относительно admin )
-	private static $configDirMain = './temp/plugins/favicon/';				// директори€ с настройками(относительно главной страницы )
+	private static $defaultFileName = 'favicon.ico';						// favicon по умолчанию
+	private static $configDir = '../temp/plugins/favicon';					// директори€ с настройками(относительно admin )
+	private static $configDirMain = './temp/plugins/favicon';				// директори€ с настройками(относительно главной страницы )
 	private $pathToPlugin;													// путь к директории плагина
 	
 	// конструктор - основное предназначение инициализировать 
@@ -33,12 +33,13 @@ class plugin_favicon
 	public function ModifyTemplate(&$template)
 	{	
 		// никаких действий с шаблоном страницы не производит
+		return false;
 	}
 	
 	// возвращ€ет описание плагина - нужно дл€ админпанели 
 	public function GetShortDescription()
 	{
-		return "изменение favicon.ico";
+		return "»зменение favicon.ico";
 	}
 	
 	// функци€ настройки плагина из админпанели
@@ -73,28 +74,39 @@ class plugin_favicon
 		*/
 	}
 	
-	// обработка страницы вида (index.php?plugin=rss) на сайте
+	// обработка страницы вида (index.php?plugin=favicon) на сайте
 	// $mainpageTemplate - главна€ страницы
 	public function Render($mainpageTemplate)
 	{	
-		echo "Hello word";
+		self::OutputImage($this->GetPath());
+			
 		exit();
-		
-		/*
-		// загружаем необходимые .php файлы
-		require_once($this->pathToPlugin.'/generate.php');
-		
-		$settings = self::LoadConfig($msg, false);
-		
-		// генераци€ rss
-		RssGen::GenRss($settings['rss_newscount'], $settings['rss_update'], $settings['rss_descr']);
-		
-		// нам не надо дальнейша€ обработка движком
-		exit();
-		*/
 	}
 	
 	//========================================================================
+	
+	// читает файл 
+	static private function OutputImage($filename)
+	{
+		header('Content-type: image/x-icon');
+		header('Content-Length: ' . filesize($filename));
+		ob_clean();
+		flush();
+		readfile($filename);
+	}
+	
+	// возвращ€ет путь на favicon картинку 
+	private function GetPath()
+	{	
+		// значение по умолчанию
+		$filePath = $this->pathToPlugin.'/'.self::$defaultFileName;
+		
+		$temp = self::$configDirMain.'/'.self::$defaultFileName;
+		if(is_file($temp))
+			$filePath = $temp;
+			
+		return $filePath;
+	}
 	
 	// «агружает конфиг
 	// $msg - возвращ€ет ошибку 
