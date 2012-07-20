@@ -297,10 +297,6 @@ $page_gen_time = microtime(1) - $time_start;
 //{page_gen_time} - время генерации страницы	
 $render_str = str_replace("{page_gen_time}", substr($page_gen_time,0, 5), $render_str);
 
-
-//FIXME: перенести в статические члены
-$z = new GZip();
-
 ob_start();
 ob_implicit_flush(0); 
 
@@ -310,7 +306,10 @@ echo $render_str;
 
 // zip output 
 if((GZIP_ENABLED == 1))
+{	
+	//FIXME: перенести в статические члены
+	$z = new GZip();
 	$z->UseGZip(GZIP_COMPRESSION);
-
+}
 
 ?>

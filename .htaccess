@@ -10,9 +10,6 @@
 	# статические страницы
 	RewriteRule ^spage/([0-9]+)\.htm$ index.php?spage=$1
 
-	#sitemap plugin sitemap
-	RewriteRule ^sitemap.xml$ ./plugins/sitemap/index.php
-
 	#если используется сжатие файла sitemap.xml
 	#RewriteRule ^sitemap.xml.gz$ sitemap.xml
 
@@ -24,10 +21,15 @@
 	
 	
 	#настройки плагинов 
+	# для плагина sitemap
+	RewriteRule sitemap.xml index.php?plugin=sitemap
 	#для плагина favincon
 	RewriteRule favicon.ico index.php?plugin=favicon
 	# для плагина Rss
-	RewriteRule ^rss\.xml$ index.php?plugin=rss	
+	RewriteRule ^rss\.xml$ index.php?plugin=rss
+		
+	#sitemap plugin sitemap
+	#RewriteRule ^sitemap.xml$ ./plugins/sitemap/index.php
 	
 </IfModule>
 
