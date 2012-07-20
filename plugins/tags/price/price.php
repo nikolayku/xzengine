@@ -26,7 +26,7 @@ class plugin_price
 	public function __construct($path)
 	{	
 		$this->pathToPlugin = $path;
-		$this->priceUploadDir = '../'.UPLOADFILE_DIRECTORY.'/price/';	// путь лдя админпанели
+		$this->priceUploadDir = '../'.UPLOADFILE_DIRECTORY.'/price/';	// путь для админпанели
 	
 	}
 
