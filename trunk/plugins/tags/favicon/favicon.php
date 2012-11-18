@@ -45,18 +45,18 @@ class plugin_favicon
 	// функция настройки плагина из админпанели
 	public function Admin()
 	{	
-		return "настройки пока не поддерживаются";
-		/*
 		$message = "";
 				
 		// пытаемся создать директорию для хранения конфига
-		
 		if(is_dir(self::$configDir) == false)
 		{
 			if(mkdir(self::$configDir, 0777, true) === false)
-				$message .= 'Невозможно создать директорию для сохранения настроек';
+				$message .= 'Невозможно создать директорию для сохранения пользовательского favicon.ico';
+			else 
+				$message .= 'Дтректория для сохранения пользовательского favicon.ico создана';
 		}
 		
+		/*
 		if(isset($_GET['save']))
 		{
 			if(self::SaveConfig() === false)
@@ -70,8 +70,10 @@ class plugin_favicon
 		$values = self::LoadConfig($msg, true);
 		$message .= $msg;
 		
-		return $this->LoadTemplate($values, $message);
 		*/
+		
+		return $this->LoadTemplate($message);
+		
 	}
 	
 	// обработка страницы вида (index.php?plugin=favicon) на сайте
@@ -108,6 +110,17 @@ class plugin_favicon
 		return $filePath;
 	}
 	
+	private function LoadTemplate($message)
+	{
+		$tpl = file_get_contents($this->pathToPlugin.'/settings.tpl');
+		
+		// заменяем теги
+		// {message}
+		$tpl = str_replace('{message}', $message, $tpl);
+		
+		return $tpl;
+	}
+	
 	// Загружает конфиг
 	// $msg - возвращяет ошибку 
 	// $ifAdminPage - если true, то сейчас работа вёдется с админпанели, false значит основная страница сайта
@@ -142,30 +155,9 @@ class plugin_favicon
 		
 		return $ret;
 	}
+		*/
 	
-	private function LoadTemplate($values, $message)
-	{
-		$tpl = file_get_contents($this->pathToPlugin.'/settings.tpl');
-		
-		// заменяем теги
-		// {message}
-		$tpl = str_replace('{message}', $message, $tpl);
-		
-		// {rss_newscount}
-		$tpl = str_replace('{rss_newscount}', $values['rss_newscount'], $tpl);
-		
-		// {rss_descr}
-		$tpl = str_replace('{rss_descr}', $values['rss_descr'], $tpl);
-		
-		// {rss_update}
-		$tpl = str_replace('{rss_update}', $values['rss_update'], $tpl);
-		
-		// {rss_edit} - урл 
-		$tpl = str_replace('{rss_edit}', self::$pluginUrl.'&save', $tpl);
-		
-		return $tpl;
-	}
-	
+	/*
 	private static function SaveConfig()
 	{
 		$data = array();

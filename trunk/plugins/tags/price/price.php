@@ -303,6 +303,9 @@ class plugin_price
 			$settingsTpl = str_replace("{price_time}", date("d-m-Y", $fileInfo['mtime']), $settingsTpl);
 		}
 		
+		// {help}
+		$settingsTpl = str_replace("{help}", file_get_contents($this->pathToPlugin.'/readme.txt'), $settingsTpl);
+		
 		return $settingsTpl;
 	}
 	
@@ -311,7 +314,7 @@ class plugin_price
 	{	
 		$filename = $_FILES['uploadfilename']['name'];
 		
-		// проверки на поддерживаемы тип
+		// проверки на поддерживаемый тип
 		if(self::isValidExtension($filename) === false)
 			return 'Данный тип файла не поддерживается';	
 		
