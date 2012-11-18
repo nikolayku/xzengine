@@ -40,7 +40,8 @@ class plugin_sitemap
 	// функция настройки плагина из админпанели
 	public function Admin()
 	{	
-		return "настройки пока не поддерживаются";
+		$message = "";
+		return $this->LoadSettings($message);
 	}
 	
 	// обработка страницы вида (index.php?plugin=rss) на сайте
@@ -145,6 +146,18 @@ class plugin_sitemap
 		}
 		printf('</urlset>'."\n");
 		
+	}
+	
+	//==================== вспомогательные функции
+	private function LoadSettings($message)
+	{
+		$tpl = file_get_contents($this->pathToPlugin.'/settings.tpl');
+		
+		// заменяем теги
+		// {message}
+		$tpl = str_replace('{message}', $message, $tpl);
+		
+		return $tpl;
 	}
 }
 
