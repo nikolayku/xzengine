@@ -9,7 +9,7 @@
 class plugin_favicon
 {	
 	private static $pluginName = 'favicon';									// имя самого плагина
-	private static $pluginUrl = './index.php?plugins=favicon';				// страница настроек плагина в админпанеле
+	private static $pluginUrl = 'index.php?plugins=favicon';				// страница настроек плагина в админпанеле
 	private static $defaultFileName = 'favicon.ico';						// favicon по умолчанию
 	private static $configDir = '../temp/plugins/favicon';					// директория с настройками(относительно admin )
 	private static $configDirMain = './temp/plugins/favicon';				// директория с настройками(относительно главной страницы )
@@ -56,24 +56,19 @@ class plugin_favicon
 				$message .= 'Дтректория для сохранения пользовательского favicon.ico создана';
 		}
 		
-		/*
-		if(isset($_GET['save']))
+		// загрузка файла
+		if(isset($_GET['upload']))
+			$message .= $this->ParseUplodedFile();
+		else if(isset($_GET['delete']))
 		{
-			if(self::SaveConfig() === false)
-				$message .= 'Ошибка сохранения конфигурационного файла';
+			if(@unlink(self::$configDir.'/'.self::$defaultFileName))
+				$message .= "Файл удалён";
 			else
-				$message .= 'Настройки сохранены';
+				$message .= "Невозможно удалить файл";
 		}
 		
-		// загружаем конфиг файл
-		$msg = '';
-		$values = self::LoadConfig($msg, true);
-		$message .= $msg;
 		
-		*/
-		
-		return $this->LoadTemplate($message);
-		
+		return $this->LoadTemplate($message);		
 	}
 	
 	// обработка страницы вида (index.php?plugin=favicon) на сайте
@@ -87,7 +82,7 @@ class plugin_favicon
 	
 	//========================================================================
 	
-	// читает файл 
+	// Выводит favicon.ico 
 	static private function OutputImage($filename)
 	{
 		header('Content-type: image/x-icon');
@@ -97,7 +92,7 @@ class plugin_favicon
 		readfile($filename);
 	}
 	
-	// возвращяет путь на favicon картинку 
+	// Возвращяет путь на favicon картинку 
 	private function GetPath()
 	{	
 		// значение по умолчанию
@@ -118,62 +113,59 @@ class plugin_favicon
 		// {message}
 		$tpl = str_replace('{message}', $message, $tpl);
 		
+		//{favicon_path}
+		$link = SITE_PATH.self::$pluginUrl;
+		if(SIMPLY_URL == 1)
+			$link = SITE_PATH."/".self::$defaultFileName;
+		$tpl = str_replace("{favicon_path}", $link, $tpl);
+		
+		// {maxfilesize_str}	
+		$tpl = str_replace("{maxfilesize_str}", ConvertBytes(UPLOADFILE_SIZE), $tpl);
+		
+		// {maxfilesize}	
+		$settingsTpl = str_replace("{maxfilesize}", UPLOADFILE_SIZE, $settingsTpl);
+		
+		// {new}
+		$tpl = str_replace("{new}", self::$pluginUrl.'&upload', $tpl);
+		// {delete}
+		$tpl = str_replace("{delete}", self::$pluginUrl.'&delete', $tpl);
+		
 		return $tpl;
 	}
-	
-	// Загружает конфиг
-	// $msg - возвращяет ошибку 
-	// $ifAdminPage - если true, то сейчас работа вёдется с админпанели, false значит основная страница сайта
-	/*static private function LoadConfig(&$msg, $ifAdminPage)
-	{	
-		// значения по умолчанию
-		$default = array();
-		$default['rss_newscount'] = 30;						// количество новостей на странице
-		$default['rss_descr'] = 'xzengne - rss plugin ';	// описание канала
-		$default['rss_update'] = 120;						// время обновления канала в минутах
-		
-		$configFile = self::$configDir . self::$configFile;
-		if($ifAdminPage === false)
-			$configFile = self::$configDirMain . self::$configFile;
-		
-		if(is_file($configFile) === false)
-		{	
-			$msg = 'Конфигурационный файл не найден, используются настройки по умолчанию';
-			return $default;
-		}	
-		
-		// загружаем конфиг
-		$buf = file_get_contents($configFile);
-		$ret = @unserialize($buf);
-		if($ret === false)
-		{
-			$msg = 'Ошибка загрузки конфигурационного файла';
-			return $default;
-		}
-		
-		//FIXME: проверка введённых значений
-		
-		return $ret;
-	}
-		*/
-	
-	/*
-	private static function SaveConfig()
+	// ==================== helper functions ====================
+	// возвращяет расширение файла
+	static private function getExtension($path)
 	{
-		$data = array();
-		$data['rss_newscount'] = $_POST['rss_newscount'];
-		$data['rss_descr'] = $_POST['rss_descr'];
-		$data['rss_update'] = $_POST['rss_update'];
+		$path = trim($path);
 		
-		//FIXME: проверка введенных данных
+		$part = explode('.', $path);
+		if(count($part) > 0)
+			$part = $part[count($part) - 1];
 		
-		// сохранение
-		$buf = serialize($data);
+		if($part == $path)
+			return false;
 		
-		$fileToSave = self::$configDir . self::$configFile;
-		return @file_put_contents($fileToSave, $buf);
+		$part = strtolower(trim($part));
+		return $part;
 	}
-	*/
+	
+	// обрабатывает загруженный файл
+	private function ParseUplodedFile()
+	{	
+		$filename = $_FILES['uploadfilename']['name'];
+		
+		// проверки на поддерживаемый тип
+		if(self::getExtension($filename) !== "ico")
+			return 'Только .ico подходит под favicon сайта';	
+		
+		if(!is_uploaded_file($_FILES['uploadfilename']['tmp_name']))
+			return 'Файл не загружен. Возможно файл имеет слишком большой размер или произошёл разрыв соединения';	
+		
+		if(!move_uploaded_file($_FILES['uploadfilename']['tmp_name'], self::$configDir.'/'.self::$defaultFileName))
+			return 'Невозможно перенести файл';
+				
+		return 'Файл favicon.ico загружен.';
+	}
 	
 }
 

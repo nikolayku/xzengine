@@ -10,7 +10,7 @@ class plugin_sitemap
 {	
 	private static $pluginName = 'sitemap';								// им€ самого плагина
 	private static $pluginUrl = './index.php?plugins=sitemap';			// страница настроек плагина в админпанеле
-	private $pathToPlugin;											// путь к директории плагина
+	private $pathToPlugin;												// путь к директории плагина
 	
 	// конструктор - основное предназначение инициализировать 
 	// $path - путь к директории со скинами
@@ -34,14 +34,29 @@ class plugin_sitemap
 	// возвращ€ет описание плагина - нужно дл€ админпанели 
 	public function GetShortDescription()
 	{
-		return "√енераци€ sizemap.xml";
+		return "√енераци€ sitemap.xml";
 	}
 	
 	// функци€ настройки плагина из админпанели
 	public function Admin()
 	{	
-		$message = "";
-		return $this->LoadSettings($message);
+		$tpl = file_get_contents($this->pathToPlugin.'/settings.tpl');
+		
+		// {sitepath_link}
+		$link = SITE_PATH."/index.php?plugin=sitemap";
+		if(SIMPLY_URL == 1)
+			$link = SITE_PATH."/sitemap.xml";
+		$tpl = str_replace("{sitepath_link}", $link, $tpl);
+		
+		$url = urlencode($link);
+		$tpl = str_replace("{google_sitemap}", "http://google.com/webmasters/sitemaps/ping?sitemap=".$link, $tpl);
+		$tpl = str_replace("{yandex_sitemap}", "http://webmaster.yandex.ru/wmconsole/sitemap_list.xml?host=".$link, $tpl);
+		$tpl = str_replace("{yahoo_sitemap}", "http://search.yahooapis.com/SiteExplorerService/V1/updateNotification?appid=SitemapWriter&url= ".$link, $tpl);
+		$tpl = str_replace("{askcom_sitemap}", "http://submissions.ask.com/ping?sitemap=".$link, $tpl);
+		$tpl = str_replace("{bing_sitemap}", "http://www.bing.com/webmaster/ping.aspx?siteMap=".$link, $tpl);
+		
+		return $tpl;
+		
 	}
 	
 	// обработка страницы вида (index.php?plugin=rss) на сайте
@@ -52,7 +67,7 @@ class plugin_sitemap
 		exit();
 	}
 
-	//===================== 
+	//==================== вспомогательные функции
 	private static function GenerateSitemapXml()
 	{
 		// устанавливаем header
@@ -71,7 +86,6 @@ class plugin_sitemap
 		printf("\t\t".'<loc>'.SITE_PATH.'/</loc>'."\n");
 		printf("\t\t".'<priority>0.9</priority>'."\n");	
 		printf("\t".'</url>'."\n"); 
-
 
 		// форма обратного сообщени€
 		printf("\t".'<url>'."\n");
@@ -130,7 +144,7 @@ class plugin_sitemap
 			}	
 
 		}
-
+		
 		// добавл€ем страницы
 		if($totalNews)
 		{
@@ -148,17 +162,6 @@ class plugin_sitemap
 		
 	}
 	
-	//==================== вспомогательные функции
-	private function LoadSettings($message)
-	{
-		$tpl = file_get_contents($this->pathToPlugin.'/settings.tpl');
-		
-		// замен€ем теги
-		// {message}
-		$tpl = str_replace('{message}', $message, $tpl);
-		
-		return $tpl;
-	}
 }
 
 ?>

@@ -1,27 +1,23 @@
 <div align="center">				
-				<br/>
-				<div align="center"><b>{message}</b></div><br/>
-				<form id="rss_edit" name="rss_edit" method="post" action="{rss_edit}">
-					
-					Количество новостей выдаваемой Rss
-					<br>
-              			<input name="rss_newscount" type="text" id="rss_newscount" size="40" value="{rss_newscount}" />
-					<br>
-					<br>
-					Описание ресурса  
-					<br>
-              			<input name="rss_descr" type="text" id="rss_descr" size="40" value="{rss_descr}" />
-					<br>
-					<br>
-					Время(в минутах) через которое следует обновлять содержимое канала
-					<br>
-              			<input name="rss_update" type="text" id="rss_update" size="40" value="{rss_update}" />
-					<br>
-					<br>
-					
-					<input type="submit" name="Submit" value="Сохранить" />
+	<br/>
+	<div align="center"><b>{message}</b></div><br/>
+		
+	Путь к файлу favicon.ico
+	<br>
+		<img src="{favicon_path}" width="16" height="16"> &nbsp;&nbsp;
+		<input name="favicon_path" type="text" id="favicon_path" size="40" value="{favicon_path}" />
+		<a href="{delete}">Удалить текущий</a>
+	<br><br>
+	<br>
+	<form method="post" enctype="multipart/form-data" name="uploadfile" id="uploadfile" action="{new}">
+		<input type="hidden" name="MAX_FILE_SIZE" value="{maxfilesize}"> 
+		Путь к файлу(расширение только <b>.ico</b>, можно загружать файлы размером {maxfilesize_str})<br>
+		<input name="uploadfilename" type="file" id="uploadfilename" size="40" /> 
+		<input name="StartUpload" type="submit" id="StartUpload" value="Загрузить favicon" />
 
-				</form>	
+	</form>
+	<br>
+
 </div>
 <br/>
 <br/>

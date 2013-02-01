@@ -51,7 +51,6 @@ class plugin_rss
 		$message = "";
 				
 		// пытаемся создать директорию для хранения конфига
-		
 		if(is_dir(self::$configDir) == false)
 		{
 			if(mkdir(self::$configDir, 0777, true) === false)
@@ -134,6 +133,12 @@ class plugin_rss
 		// заменяем теги
 		// {message}
 		$tpl = str_replace('{message}', $message, $tpl);
+		
+		//{rss_path}
+		$link = SITE_PATH."/index.php?plugin=rss";
+		if(SIMPLY_URL == 1)
+			$link = SITE_PATH."/rss.xml";
+		$tpl = str_replace("{rss_path}", $link, $tpl);
 		
 		// {rss_newscount}
 		$tpl = str_replace('{rss_newscount}', $values['rss_newscount'], $tpl);
