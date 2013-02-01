@@ -1,6 +1,6 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableborder">
 	<tr>
-		<td width="4%"><img src="{plugin_icon}"></td>
+		<td width="4%"><img src="{plugin_icon}" width="16" height="16"></td>
 		<td width="17%">{plugin_name}</td>
 		<td width="67%"><a href="./index.php?plugins={plugin_name}" >{plugin_short_descr}</a></td>
 		<td width="9%" align="center">&nbsp;</td>
