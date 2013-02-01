@@ -2,7 +2,11 @@
 				<br/>
 				<div align="center"><b>{message}</b></div><br/>
 				<form id="rss_edit" name="rss_edit" method="post" action="{rss_edit}">
-					
+					Путь к rss
+					<br>
+						<input name="rss_path" type="text" id="rss_path" size="40" value="{rss_path}" />
+					<br>
+					<br>
 					Количество новостей выдаваемой Rss
 					<br>
               			<input name="rss_newscount" type="text" id="rss_newscount" size="40" value="{rss_newscount}" />

@@ -103,7 +103,7 @@
 						<li><a title="Добавить в избранное" href="" onclick="bookmark('{title}', '{sitepath}')">Добавить в избранное</a></li>
 						<li><a title="Сделать стартовой" href="" onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('{sitepath}');return false;">Сделать стартовой</a></li>
 						<li><a title="Обратная связь" href="{sitepath}/index.php?feedback" >Форма обратной связи</a></li>
-						<li><a title="Rss 2.0" href="{sitepath}/index.php?rss" >RSS 2.0</a></li>
+						<li><a title="Rss 2.0" href="{sitepath}/rss.xml" >RSS 2.0</a></li>
 
 					</ul>
 					<h2>Прайс лист</h2>

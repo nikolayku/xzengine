@@ -1,6 +1,6 @@
 <?php
 //---------------------------------------------
-// config file created atWednesday 18th 2012f July 2012 12:44:02 PM
+// config file created atFriday 01st 2013f February 2013 12:26:15 PM
 //---------------------------------------------
 
 // Состояние сайта 
