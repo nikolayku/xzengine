@@ -12,11 +12,26 @@
 // %m% - подставл€ет текущюю минуту
 // %s% - подставл€ет текущюю секунду 
 
+// используетс€ как callback функци€ 
+function plugin_time_callback($matches)
+{	
+	// подстановка дл€ функции date
+	$chars = array("%Y%"=>"Y", "%M%"=>"m", "%D%"=>"d", "%h%"=>"H", "%m%"=>"i", "%s%"=>"s");
+	$date = $matches[1];
+	
+	// форматируем дл€ функции date
+	foreach($chars as $key=>$val)
+		$date = str_replace($key, $val, $date);
+	
+	return date($date);
+}
+
 class plugin_time
 {	
-	private static $pluginName = 'time';							// им€ самого плагина
+	private static $pluginName = 'time';						// им€ самого плагина
 	private static $pluginUrl = './index.php?plugins=time';
-	private $pathToPlugin;											// путь к директории плагина
+	private static $regExpr = "/{time:([^}]+)}/";				// регул€рное выражение дл€ поиска
+	private $pathToPlugin;										// путь к директории плагина
 	
 	// конструктор - основное предназначение инициализировать 
 	// $path - путь к директории со скинами
@@ -35,9 +50,8 @@ class plugin_time
 	// делает нужные преобразовани€
 	public function ModifyTemplate(&$template)
 	{	
-		//загружаем файл локализации
 		// модифицируем главную страницу 
-		$template = str_replace('{time}', "curret time is here", $template);
+		$template = preg_replace_callback(self::$regExpr, "plugin_time_callback", $template);		
 	}
 	
 	// возвращ€ет описание плагина - нужно дл€ админпанели 
