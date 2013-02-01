@@ -119,14 +119,11 @@
 </div>
 <!-- end page -->
 <div id="footer">
-	<p>2005-2007 Powered by xzengine v.{versionnumber} <!-- <noindex><nofollow><iframe src="http://www.sape.ru/r.0bf14ccf4b.php" width="1" height="1" frameborder="0" scrolling="no"></iframe></nofollow></noindex> --></p>
+	<p>2005-{time:%Y%-%M%-%D%} Powered by xzengine v.{versionnumber}</p>
 </div>
 </body>
 </html>
 <!-- 
 Страница сгенерирована за {page_gen_time} секунд 
 использовано {number_sql_queries} запросов к БД
-
-Ошибки выполнения скрипта:
-{debug_log} 
 -->
