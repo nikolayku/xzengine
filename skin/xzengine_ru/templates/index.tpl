@@ -57,8 +57,10 @@
 	{javascript}
 	<!-- css styles -->
 	{style}
+	<LINK rel="alternate" type="application/rss+xml" title="RSS" href="{rss}">
+	<link rel="shortcut icon" href="{sitepath}/favicon.ico" />
 </head>
-<LINK rel="alternate" type="application/rss+xml" title="RSS" href="{rss}">
+
 <body>
 <!-- Заголовок -->
 <div id="logo">
