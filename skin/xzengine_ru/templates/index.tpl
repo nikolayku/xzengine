@@ -119,7 +119,7 @@
 </div>
 <!-- end page -->
 <div id="footer">
-	<p>2005-{time:%Y%-%M%-%D%} Powered by xzengine v.{versionnumber}</p>
+	<p>2005-{time:%Y%} Powered by xzengine v.{versionnumber}</p>
 </div>
 </body>
 </html>
